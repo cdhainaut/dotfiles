@@ -54,5 +54,3 @@ alias star13="/opt/CD-adapco/13.04.011-R8/STAR-CCM+13.04.011-R8/star/bin/starccm
 export CDLMD_LICENSE_FILE="/home/charles/Documents/license.dat"
 
 #export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
-
-. "$HOME/.cargo/env"

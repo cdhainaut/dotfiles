@@ -1,0 +1,49 @@
+#!/bin/bash
+set -euo pipefail
+
+echo "🔧 Mise à jour du système"
+sudo apt update && sudo apt upgrade -y
+
+### 1. Install Zsh ###
+if ! command -v zsh >/dev/null; then
+    echo "➡️ Installation de zsh"
+    sudo apt install -y zsh
+else
+    echo "✅ zsh déjà installé"
+fi
+
+### 2. Install Oh-My-Zsh ###
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    echo "➡️ Installation de Oh My Zsh"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+else
+    echo "✅ Oh My Zsh déjà installé"
+fi
+
+### 3. Install Neovim from source ###
+if ! command -v nvim >/dev/null; then
+    echo "➡️ Installation de Neovim depuis les sources"
+    sudo apt install -y ninja-build gettext cmake unzip curl git build-essential
+
+    git clone https://github.com/neovim/neovim.git /tmp/neovim
+    cd /tmp/neovim
+    git checkout stable
+    make CMAKE_BUILD_TYPE=Release
+    sudo make install
+    echo "✅ Neovim installé"
+else
+    echo "✅ Neovim déjà installé"
+fi
+
+### 4. Install Miniconda ###
+if ! command -v conda >/dev/null; then
+    echo "➡️ Installation de Miniconda"
+    curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh
+    bash /tmp/miniconda.sh -b -p "$HOME/miniconda"
+    "$HOME/miniconda/bin/conda" init zsh
+    echo "✅ Miniconda installé"
+else
+    echo "✅ Miniconda déjà installé"
+fi
+
+echo "🎉 Stack de développement installée avec succès"

@@ -1,0 +1,14 @@
+layout {
+  pane {
+    command "hx"
+  }
+  
+
+  pane {
+    command "zsh" 
+  }
+
+
+
+}
+

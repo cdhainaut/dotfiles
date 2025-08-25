@@ -10,7 +10,7 @@ select = "underline"
 [keys.normal]
 "(" = "goto_prev_paragraph"
 ")" = "goto_next_paragraph"
-"G" = "goto_last_line"
+"G" = "goto_file_end"
 "0" = "goto_line_start"
 "V" = ["goto_line_start","select_mode"]
 "C-h" = "jump_view_left"
@@ -21,7 +21,7 @@ select = "underline"
 [keys.select]
 "(" = "goto_prev_paragraph"
 ")" = "goto_next_paragraph"
-"G" = "goto_last_line"
+"G" = "goto_file_end"
 "0" = "goto_line_start"
 "C-h" = "jump_view_left"
 "C-l" = "jump_view_right"

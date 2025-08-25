@@ -4,11 +4,9 @@ layout {
   }
   
 
-  pane {
+  pane size="20%" {
     command "zsh" 
   }
-
-
 
 }
 

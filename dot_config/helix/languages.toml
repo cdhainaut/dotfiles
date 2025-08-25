@@ -6,8 +6,22 @@ command = "helix-gpt"
 command = "pyright-langserver"
 args = ["--stdio"]
 
-[language-server.pyright.config.python.analysis]
+
+[language-server.pyright.config]
 typeCheckingMode = "basic"
+autoSearchPaths = true
+useLibraryCodeForTypes = true
+reportMissingTypeStubs = "none"
+reportUnknownParameterType = "none"
+reportUnknownArgumentType = "none"
+reportUnknownVariableType = "none"
+reportUnknownMemberType = "none"
+reportUnknownLambdaType = "none"
+reportUntypedFunctionDecorator = "none"
+reportPrivateUsage = "none"
+reportOptionalMemberAccess = "warning"
+reportOptionalSubscript = "warning"
+reportOptionalCall = "warning"
 
 [language-server.ruff]
 command = "ruff"

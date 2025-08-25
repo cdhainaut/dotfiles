@@ -14,7 +14,7 @@ config.initial_rows = 44
 config.font_size = 10
 
 config.color_scheme = 'Afterglow (Gogh)'
-config.window_background_opacity = 0.95
+config.window_background_opacity = 0.98
 config.window_decorations = 'INTEGRATED_BUTTONS'
 
 config.tab_bar_at_bottom = true

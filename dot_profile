@@ -32,6 +32,43 @@ export dev="$work/CDYYY-Dev"
 export pyutils="$dev/python-utils"
 export LC_NUMERIC="en_US.UTF-8"
 
+if [[ $- == *i* ]]; then
+  [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+  [ -f /usr/share/doc/fzf/examples/completion.zsh ]   && source /usr/share/doc/fzf/examples/completion.zsh
+  autoload -Uz compinit && compinit
+fi
+
+
+pj() {
+    # Find only directories, max depth 1, skip WORK_DIR itself
+    local proj
+    proj=$(find "$work" -mindepth 1 -maxdepth 3 -type d | sort | fzf --prompt="Select project: " --height=40% --reverse)
+
+    if [ -n "$proj" ]; then
+        cd "$proj" || return
+        echo "📂 Jumped to: $proj"
+    else
+        echo "❌ No project selected."
+    fi
+}
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+# Jump to a project by code
+# pj() {
+#     cd "$work"/"$1"* 2>/dev/null || echo "Project $1 not found"
+# }
+
+# # Autocomplete project codes
+# _pj_autocomplete() {
+#     COMPREPLY=($(compgen -W "$(basename -a "$work"/*)" -- "${COMP_WORDS[1]}"))
+# }
+# complete -F _pj_autocomplete pj
 
 ## Yabridge
 
@@ -45,8 +82,16 @@ export PATH="$PATH:/home/codes/bin"
 export PATH="$HOME/.local/bin:$PATH"
 
 # Helix
+# 
+if [ -f "$HOME/.private_keys" ]; then
+    . "$HOME/.private_keys"
+fi
 export HANDLER=copilot
+#export HANDLER=codeium
+export HELIX_RUNTIME=~/src/helix/runtime
 
+# Conda shorthand
+alias ca="conda activate"
 
 ## StarCCM+
 
@@ -54,3 +99,4 @@ alias star13="/opt/CD-adapco/13.04.011-R8/STAR-CCM+13.04.011-R8/star/bin/starccm
 export CDLMD_LICENSE_FILE="/home/charles/Documents/license.dat"
 
 #export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
+. "$HOME/.cargo/env"

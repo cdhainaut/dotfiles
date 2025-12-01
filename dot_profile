@@ -81,6 +81,10 @@ export PATH="$PATH:/home/codes/bin"
 #chezmoi
 export PATH="$HOME/.local/bin:$PATH"
 
+
+# Go
+export PATH="$PATH:$HOME/go/bin"
+
 # Helix
 # 
 if [ -f "$HOME/.private_keys" ]; then

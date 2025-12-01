@@ -1,0 +1,33 @@
+name: Test dotfiles deployment
+on:
+  push:
+  pull_request:
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Build test Docker image
+        run: |
+          docker build -t chezmoi-test .
+      - name: Run container and apply chezmoi
+        run: |
+          docker run --rm -i chezmoi-test bash -c '
+            set -eux
+
+            # 1. Installer chezmoi
+            sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+            export PATH="$HOME/.local/bin:$PATH"
+
+            # 2. Appliquer le dépôt
+            chezmoi init --apply github.com/${{ github.repository }}
+
+            # 3. Vérifications rapides pour éviter régressions
+            command -v zsh
+            command -v hx || command -v helix || (echo "Helix absent" && exit 1)
+            command -v nvim
+            command -v cargo
+            command -v zellij || true   # selon ta conf
+          '

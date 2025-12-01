@@ -13,21 +13,4 @@ jobs:
         run: |
           docker build -t chezmoi-test .
       - name: Run container and apply chezmoi
-        run: |
-          docker run --rm -i chezmoi-test bash -c '
-            set -eux
-
-            # 1. Installer chezmoi
-            sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
-            export PATH="$HOME/.local/bin:$PATH"
-
-            # 2. Appliquer le dépôt
-            chezmoi init --apply github.com/${{ github.repository }}
-
-            # 3. Vérifications rapides pour éviter régressions
-            command -v zsh
-            command -v hx || command -v helix || (echo "Helix absent" && exit 1)
-            command -v nvim
-            command -v cargo
-            command -v zellij || true   # selon ta conf
-          '
+        run: "docker run --rm -i chezmoi-test bash -c '\n  set -eux\n\n  # 1. Installer chezmoi\n  sh -c \"$(curl -fsLS get.chezmoi.io)\" -- -b \"$HOME/.local/bin\"\n  export PATH=\"$HOME/.local/bin:$PATH\"\n\n  # 2. Appliquer le dépôt\n  chezmoi init --apply github.com/${{ github.repository }}\n\n  # 3. Vérifications rapides pour éviter régressions\n  command -v zsh\n  command -v hx \n  command -v nvim\n  command -v cargo\n  command -v zellij || true   # selon ta conf\n'\n"

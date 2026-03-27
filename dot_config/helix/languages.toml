@@ -1,4 +1,10 @@
 # ~/.config/helix/languages.toml
+[language-server.helix-assist]
+command = "helix-assist"
+# Optional
+args = ["--handler", "anthropic", "--num-suggestions", "2"]
+
+
 [language-server.gpt]
 command = "helix-gpt"
 
@@ -9,6 +15,10 @@ args = ["--stdio"]
 [language-server.wakatime]
 command = "wakatime-ls"
 
+
+[language-server.clangd]
+command = "clangd"
+args = ["--background-index", "--clang-tidy"]
 
 [language-server.pyright.config]
 typeCheckingMode = "basic"
@@ -53,3 +63,10 @@ auto-format = true
 name = "javascript"
 file-types = ["js", "cjs", "mjs", "bic", "boc"]
 language-servers = ["gpt","wakatime"]
+
+
+[[language]]
+name = "cpp"
+auto-format = true
+formatter = { command = "clang-format" }
+language-servers = ["gpt","clangd"]

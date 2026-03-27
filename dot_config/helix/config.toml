@@ -17,7 +17,7 @@ select = "underline"
 "C-l" = "jump_view_right"
 "C-k" = "jump_view_up"
 "C-j" = "jump_view_down"
-"C-q" = ":buffer-close"
+# "C-q" = ":buffer-close"
 # "<space>q" = ":buffer-close"
 g = { a = "code_action" } # Maps `ga` to show possible code actions
 
@@ -29,6 +29,9 @@ C-g = [
     ":redraw", 
     ":reload-all"
 ]
+
+[keys.normal.space]
+"q" = ":buffer-close"
 
 [keys.select]
 "(" = "goto_prev_paragraph"

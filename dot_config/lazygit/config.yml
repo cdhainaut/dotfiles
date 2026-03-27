@@ -1,0 +1,36 @@
+gui:
+  theme:
+    activeBorderColor:
+      - "#7287fd"
+      - bold
+    inactiveBorderColor:
+      - "#7c7f93"
+    searchingActiveBorderColor:
+      - "#8839ef"
+      - bold
+    optionsTextColor:
+      - "#1e66f5"
+    # 🔥 clé ici → on fonce légèrement
+    selectedLineBgColor:
+      - "#303446"
+    selectedRangeBgColor:
+      - "#292c3c"
+    highlightedLineBgColor:
+      - "#3a3d4d"
+    defaultFgColor:
+      - "#ccd0da"
+    unstagedChangesColor:
+      - "#d20f39"
+    commitHashColor:
+      - "#8839ef"
+    branchColor:
+      - "#40a02b"
+    diff:
+      addColor:
+        - "#40a02b"
+      removeColor:
+        - "#d20f39"
+    commandLogColor:
+      - "#1e66f5"
+    fileColor:
+      - "#ccd0da"

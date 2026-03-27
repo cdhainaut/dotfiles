@@ -35,7 +35,9 @@ export LC_NUMERIC="en_US.UTF-8"
 if [[ $- == *i* ]]; then
   [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
   [ -f /usr/share/doc/fzf/examples/completion.zsh ]   && source /usr/share/doc/fzf/examples/completion.zsh
-  autoload -Uz compinit && compinit
+  # autoload -Uz compinit && compinit
+    autoload -Uz compinit
+    compinit -C
 fi
 
 
@@ -59,16 +61,6 @@ function y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
-# Jump to a project by code
-# pj() {
-#     cd "$work"/"$1"* 2>/dev/null || echo "Project $1 not found"
-# }
-
-# # Autocomplete project codes
-# _pj_autocomplete() {
-#     COMPREPLY=($(compgen -W "$(basename -a "$work"/*)" -- "${COMP_WORDS[1]}"))
-# }
-# complete -F _pj_autocomplete pj
 
 ## Yabridge
 
@@ -91,12 +83,29 @@ if [ -f "$HOME/.private_keys" ]; then
     . "$HOME/.private_keys"
 fi
 export HANDLER=copilot
+# export HANDLER=anthropic
+# export ANTHROPIC_API_KEY=1234
+
 #export HANDLER=codeium
 export HELIX_RUNTIME=~/src/helix/runtime
 
 # Conda shorthand
 alias ca="conda activate"
+# 
+# Lazygit
+alias lg="lazygit"
+alias ld="lazydocker"
+alias zj="zellij"
 
+
+# DMG
+alias rdp-dmg='xfreerdp /v:192.168.100.10 /u:team /sec:rdp /gfx /network:lan /dynamic-resolution /microphone:off /p:***RDP_PASS_REDACTED***'
+alias rdp-rhino='xfreerdp /v:192.168.0.112 /u:wds /gfx /network:lan /dynamic-resolution /microphone:off /p:***RDP_PASS_REDACTED***'
+
+
+# cpwd
+alias cpwd='pwd | xclip -selection clipboard'
+# 
 ## StarCCM+
 
 alias star13="/opt/CD-adapco/13.04.011-R8/STAR-CCM+13.04.011-R8/star/bin/starccm+"

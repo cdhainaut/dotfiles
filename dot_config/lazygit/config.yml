@@ -1,36 +1,36 @@
 gui:
   theme:
+    # Espresso-matched (warm neutral)
     activeBorderColor:
-      - "#7287fd"
+      - "#a5c261" # green
       - bold
     inactiveBorderColor:
-      - "#7c7f93"
+      - "#777777" # gray
     searchingActiveBorderColor:
-      - "#8839ef"
+      - "#ffc66d" # yellow/orange
       - bold
     optionsTextColor:
-      - "#1e66f5"
-    # 🔥 clé ici → on fonce légèrement
+      - "#6c99bb" # blue
     selectedLineBgColor:
-      - "#303446"
+      - "#393939" # bg highlight
     selectedRangeBgColor:
-      - "#292c3c"
+      - "#393939" # bg highlight
     highlightedLineBgColor:
-      - "#3a3d4d"
+      - "#474747" # bg lighter
     defaultFgColor:
-      - "#ccd0da"
+      - "#ffffff" # white fg
     unstagedChangesColor:
-      - "#d20f39"
+      - "#d25252" # red
     commitHashColor:
-      - "#8839ef"
+      - "#b98eff" # purple
     branchColor:
-      - "#40a02b"
+      - "#a5c261" # green
     diff:
       addColor:
-        - "#40a02b"
+        - "#a5c261" # green
       removeColor:
-        - "#d20f39"
+        - "#d25252" # red
     commandLogColor:
-      - "#1e66f5"
+      - "#6c99bb" # blue
     fileColor:
-      - "#ccd0da"
+      - "#ffffff" # white fg

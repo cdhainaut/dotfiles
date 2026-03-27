@@ -156,7 +156,7 @@ keybinds clear-defaults=true {
 }
 
 // ---------- CLEAN UI ----------
-simplified_ui true
+simplified_ui false
 pane_frames false
 styled_underlines true
 show_startup_tips false
@@ -169,8 +169,8 @@ mouse_mode true
 copy_on_select true
 
 // ---------- THEME ----------
-// theme "nord"
 theme "catppuccin-latte"
+// theme "kanagawa"
 // theme "catppuccin-macchiato"
 
 // ---------- PLUGINS CLEAN ----------

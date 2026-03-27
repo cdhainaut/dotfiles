@@ -1,4 +1,7 @@
-theme="dark_plus"
+theme = "dark_plus"
+# theme = "kanagawa"
+# theme = "catppuccin_macchiato"
+# theme = "dark_plus"
 [editor]
 bufferline="always"		
 

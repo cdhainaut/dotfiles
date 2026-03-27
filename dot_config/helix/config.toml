@@ -22,12 +22,20 @@ select = "underline"
 g = { a = "code_action" } # Maps `ga` to show possible code actions
 
 C-g = [
-    # ":write-all", 
-    ":new", 
-    ":insert-output lazygit", 
-    ":buffer-close!", 
-    ":redraw", 
+    # ":write-all",
+    ":new",
+    ":insert-output lazygit",
+    ":buffer-close!",
+    ":redraw",
     ":reload-all"
+]
+
+C-y = [
+    ":sh rm -f /tmp/yazi-pick",
+    ":insert-output yazi '%{buffer_name}' --chooser-file=/tmp/yazi-pick",
+    ':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+    ":open %sh{cat /tmp/yazi-pick}",
+    ":redraw",
 ]
 
 [keys.normal.space]

@@ -3,6 +3,13 @@ set -euo pipefail
 
 # Setup surveillance santé PC
 # Installe smartmontools, le timer systemd, et configure sysrq
+# Skip dans un container (CI/Docker)
+
+in_container() { [ -f /.dockerenv ] || grep -qa 'container=' /proc/1/environ 2>/dev/null; }
+if in_container; then
+    echo "system-monitor: skip (container détecté)"
+    exit 0
+fi
 
 SUDO="sudo"
 command -v sudo >/dev/null 2>&1 || SUDO=""
@@ -14,7 +21,7 @@ fi
 
 # ── SysRq (activer tous les magic keys) ──
 if [ "$(cat /proc/sys/kernel/sysrq 2>/dev/null)" != "1" ]; then
-    echo 1 | $SUDO tee /proc/sys/kernel/sysrq >/dev/null
+    echo 1 | $SUDO tee /proc/sys/kernel/sysrq >/dev/null 2>&1 || true
 fi
 if [ ! -f /etc/sysctl.d/99-sysrq.conf ]; then
     echo "kernel.sysrq = 1" | $SUDO tee /etc/sysctl.d/99-sysrq.conf >/dev/null

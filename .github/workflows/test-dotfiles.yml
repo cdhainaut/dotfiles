@@ -13,9 +13,9 @@ jobs:
         run: docker build -t chezmoi-test .
       - name: Run container and apply chezmoi
         run: |
-          docker run --rm chezmoi-test bash -lc '
+          docker run --rm chezmoi-test bash -c '
             set -eu
-            export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+            export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/miniconda/bin:$PATH"
 
             # Install and apply chezmoi
             sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"

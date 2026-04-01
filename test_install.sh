@@ -7,12 +7,13 @@ FAIL=0
 
 check() {
   local name="$1" cmd="$2"
-  if eval "$cmd" >/dev/null 2>&1; then
-    printf "\033[1;32m  ✓ %-15s\033[0m %s\n" "$name" "$(eval "$cmd" 2>/dev/null | head -n1)"
-    ((PASS++))
+  local output
+  if output=$(timeout 5 bash -c "$cmd" 2>/dev/null | head -n1); then
+    printf "\033[1;32m  ✓ %-15s\033[0m %s\n" "$name" "$output"
+    PASS=$((PASS + 1))
   else
     printf "\033[1;31m  ✗ %-15s\033[0m not found\n" "$name"
-    ((FAIL++))
+    FAIL=$((FAIL + 1))
   fi
 }
 

@@ -10,7 +10,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Build test Docker image
-        run: |
-          docker build -t chezmoi-test .
+        run: docker build -t chezmoi-test .
       - name: Run container and apply chezmoi
-        run: "docker run --rm -i chezmoi-test bash -c '\n  set -eux\n\n  # 1. Installer chezmoi\n  sh -c \"$(curl -fsLS get.chezmoi.io)\" -- -b \"$HOME/.local/bin\"\n  export PATH=\"$HOME/.local/bin:$PATH\"\n\n  # 2. Appliquer le dépôt\n  chezmoi init --apply github.com/${{ github.repository }}\n\n  # 3. Vérifications rapides pour éviter régressions\n  command -v zsh\n  command -v hx \n  command -v nvim\n  command -v cargo\n  command -v zellij || true   # selon ta conf\n'\n"
+        run: |
+          docker run --rm chezmoi-test bash -lc '
+            set -eu
+            export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+
+            # Install and apply chezmoi
+            sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+            chezmoi init --apply github.com/${{ github.repository }}
+
+            # Run test suite
+            bash "$HOME/.local/share/chezmoi/test_install.sh"
+          '

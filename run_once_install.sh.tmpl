@@ -115,7 +115,41 @@ else
   ok "Helix déjà installé"
 fi
 
-### 6. WezTerm (optionnel, skip en headless)
+### 6. Lazygit (prebuilt binary)
+if ! need_cmd lazygit; then
+  log "Installation de lazygit"
+  LAZYGIT_VERSION=$(curl -fsSL "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+  curl -fsSL "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" | tar xzf - -C /tmp lazygit
+  $SUDO install /tmp/lazygit /usr/local/bin/lazygit
+  ok "lazygit $LAZYGIT_VERSION installé"
+else
+  ok "lazygit déjà installé"
+fi
+
+### 7. Lazydocker (prebuilt binary)
+if ! need_cmd lazydocker; then
+  log "Installation de lazydocker"
+  LAZYDOCKER_VERSION=$(curl -fsSL "https://api.github.com/repos/jesseduffield/lazydocker/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+  curl -fsSL "https://github.com/jesseduffield/lazydocker/releases/download/v${LAZYDOCKER_VERSION}/lazydocker_${LAZYDOCKER_VERSION}_Linux_x86_64.tar.gz" | tar xzf - -C /tmp lazydocker
+  $SUDO install /tmp/lazydocker /usr/local/bin/lazydocker
+  ok "lazydocker $LAZYDOCKER_VERSION installé"
+else
+  ok "lazydocker déjà installé"
+fi
+
+### 8. Yazi (prebuilt binary)
+if ! need_cmd yazi; then
+  log "Installation de yazi"
+  YAZI_VERSION=$(curl -fsSL "https://api.github.com/repos/sxyazi/yazi/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+  curl -fsSL "https://github.com/sxyazi/yazi/releases/download/v${YAZI_VERSION}/yazi-x86_64-unknown-linux-gnu.zip" -o /tmp/yazi.zip
+  unzip -o /tmp/yazi.zip -d /tmp/yazi-bin
+  $SUDO install /tmp/yazi-bin/yazi-x86_64-unknown-linux-gnu/yazi /usr/local/bin/yazi
+  ok "yazi $YAZI_VERSION installé"
+else
+  ok "yazi déjà installé"
+fi
+
+### WezTerm (optionnel, skip en headless)
 if [ "$HEADLESS" = "1" ]; then
   skip "HEADLESS=1 → on skip WezTerm"
 else
@@ -140,7 +174,7 @@ else
   fi
 fi
 
-### 7. Miniconda (zsh init)
+### Miniconda (zsh init)
 if ! need_cmd conda; then
   log "Installation de Miniconda"
   curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh
@@ -179,6 +213,9 @@ ver "fzf" "$(fzf --version 2>/dev/null || true)"
 ver "fd" "$(fd --version 2>/dev/null || fdfind --version 2>/dev/null || true)"
 ver "bat" "$(bat --version 2>/dev/null || batcat --version 2>/dev/null || true)"
 ver "ripgrep" "$(rg --version 2>/dev/null | head -n1 || true)"
+ver "lazygit" "$(lazygit --version 2>/dev/null | head -n1 || true)"
+ver "lazydocker" "$(lazydocker --version 2>/dev/null || true)"
+ver "yazi" "$(yazi --version 2>/dev/null || true)"
 ver "plank" "$(plank --version 2>/dev/null || echo 'installed')"
 
 if need_cmd wezterm; then

@@ -3,7 +3,16 @@ theme = "dark_plus"
 # theme = "catppuccin_macchiato"
 # theme = "dark_plus"
 [editor]
-bufferline="always"		
+bufferline="always"
+# Diagnostics: on désactive tout le texte inline (end-of-line + blocs multi-lignes).
+# Les soulignements et marqueurs gouttière restent actifs.
+# Détails visibles via Space+d (picker) ou ]d/[d (navigation).
+end-of-line-diagnostics = "disable"
+
+[editor.inline-diagnostics]
+cursor-line = "disable"
+other-lines = "disable"
+
 
 [editor.cursor-shape]
 insert = "bar"

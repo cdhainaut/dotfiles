@@ -20,11 +20,15 @@ command = "wakatime-ls"
 command = "clangd"
 args = ["--background-index", "--clang-tidy"]
 
+# Pyright: mode "basic" pour matcher le comportement de Pylance (VS Code).
+# "standard" (défaut pyright) est trop strict pour du prototypage.
+# Les reportXxx = "none" désactivent les erreurs de types trop verbeuses.
 [language-server.pyright.config]
 typeCheckingMode = "basic"
 autoSearchPaths = true
 useLibraryCodeForTypes = true
 reportMissingTypeStubs = "none"
+reportMissingModuleSource = "none"
 reportUnknownParameterType = "none"
 reportUnknownArgumentType = "none"
 reportUnknownVariableType = "none"
@@ -32,6 +36,7 @@ reportUnknownMemberType = "none"
 reportUnknownLambdaType = "none"
 reportUntypedFunctionDecorator = "none"
 reportPrivateUsage = "none"
+reportAttributeAccessIssue = "none"
 reportOptionalMemberAccess = "warning"
 reportOptionalSubscript = "warning"
 reportOptionalCall = "warning"

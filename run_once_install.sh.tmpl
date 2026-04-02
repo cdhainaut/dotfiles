@@ -199,8 +199,16 @@ else
   ok "Miniconda déjà installé"
 fi
 
-### Claude Code
+### Node.js (via nvm) + Claude Code
 if ! need_cmd claude; then
+  if ! need_cmd npm; then
+    log "Installation de Node.js (nvm)"
+    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    nvm install --lts
+    ok "Node.js $(node --version) installé"
+  fi
   log "Installation de Claude Code"
   npm install -g @anthropic-ai/claude-code
   ok "Claude Code installé"

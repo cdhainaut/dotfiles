@@ -45,6 +45,8 @@ check "eza"          "eza --version"
 check "rust"         "rustc --version"
 check "cargo"        "cargo --version"
 check "conda"        "conda --version"
+check "claude"       "claude --version"
+check "gh"           "gh --version"
 
 # Configs chezmoi appliquées
 echo ""

@@ -34,11 +34,35 @@ Headless mode (no WezTerm):
 HEADLESS=1 chezmoi apply
 ```
 
-### Docker testing
+### Docker
 
 ```bash
+# Build l'image (inclut tous les outils)
 docker build -t dotfiles .
-docker run -it dotfiles
+
+# Lancer les tests (identique à la CI)
+docker run --rm dotfiles bash -c '
+    export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+    chezmoi init --apply github.com/cdhainaut/dotfiles
+    bash "$HOME/.local/share/chezmoi/test_install.sh"
+'
+
+# Terminal interactif avec toute la stack
+docker run --rm -it dotfiles bash -c '
+    export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+    chezmoi init --apply github.com/cdhainaut/dotfiles
+    exec zsh
+'
+
+# Terminal interactif (config locale, pas besoin de GitHub)
+docker run --rm -it -v ~/.local/share/chezmoi:/tmp/dotfiles-src:ro dotfiles bash -c '
+    export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+    chezmoi init --apply --source /tmp/dotfiles-src
+    exec zsh
+'
 ```
 
 CI runs on every push via `.github/workflows/test-dotfiles.yml`.

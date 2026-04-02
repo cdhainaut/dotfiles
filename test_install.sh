@@ -2,6 +2,10 @@
 # Test d'intégration: vérifie que tous les outils sont installés et fonctionnels
 set -euo pipefail
 
+# Charger nvm si présent (claude est installé via npm/nvm)
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" 2>/dev/null || true
+
 PASS=0
 FAIL=0
 

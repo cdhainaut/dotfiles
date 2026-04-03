@@ -172,6 +172,69 @@ Desktop notification only when alerts detected. Silent otherwise.
 
 Setup script (`run_once_setup-system-monitor.sh`) installs smartmontools, enables SysRq (`kernel.sysrq = 1`), and creates the systemd timer.
 
+## Backup strategy
+
+Three layers of redundancy, each independent:
+
+### 1. External disk (`~/bin/emergency-backup.sh`)
+
+Full backup to USB external drive (Toshiba 2 To, NTFS). NTFS-safe rsync (no permissions, `--modify-window=1`).
+
+```bash
+~/bin/emergency-backup.sh
+```
+
+Backs up:
+
+| Phase | Content | Destination |
+|-------|---------|-------------|
+| 1 | SSH/GPG keys, credentials, Claude Code, documents, downloads, conda envs | `backup/home-YYYY-MM-DD/` |
+| 2 | Chezmoi repo verification + copy | `backup/home-YYYY-MM-DD/chezmoi-repo/` |
+| 3 | Git dirty repos scan (warnings only) | stdout |
+| 4 | /mnt/data (Work, Personnal, Admin, Software, Media) | `backup/{dir}/` |
+| 5 | Thunderbird, Firefox, Signal | `backup/home-YYYY-MM-DD/apps/` |
+
+Recovery guide on the external disk: `RECOVERY.md`.
+
+### 2. AWS S3 Glacier (`~/bin/backup-s3.sh`)
+
+Offsite backup, ~$1/mois for ~250 Go.
+
+```bash
+~/bin/backup-s3.sh
+```
+
+| Bucket | Content |
+|--------|---------|
+| `s3://cd-work/` | /mnt/data/Work (hors vidéos) |
+| `s3://dhainach-backup/data/` | Personnal, Administrative, Software |
+| `s3://dhainach-backup/home/` | Credentials (tar.gz), Claude Code, Documents, chezmoi, conda envs, system health |
+
+### 3. Git (chezmoi + GitHub)
+
+All dotfiles, scripts, and configs are versioned in `cdhainaut/dotfiles` and deployed via `chezmoi apply`. CI validates every push.
+
+### What goes where
+
+| Data | Chezmoi | External disk | S3 Glacier |
+|------|---------|---------------|------------|
+| Dotfiles / configs | Source of truth | Copy | Copy |
+| SSH/GPG keys | No | Yes | Yes (tar.gz) |
+| Claude Code settings + hooks | Yes | Yes | Yes |
+| Claude Code projects/memory | No | Yes | Yes |
+| /mnt/data/Work | No | Yes | Yes |
+| /mnt/data/Media (259 Go) | No | Yes | No (trop gros) |
+| /mnt/data/.private | No | Yes | No |
+| Conda envs (YAML) | No | Yes | Yes |
+| Thunderbird / Firefox / Signal | No | Yes | No |
+| Tool installation | run_once scripts | No | No |
+
+### Recovery priority
+
+1. **chezmoi** — `sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply cdhainaut` — installs all tools + configs
+2. **External disk** — full data restore (see `RECOVERY.md` on the disk)
+3. **S3** — offsite fallback if external disk lost
+
 ## Git
 
 User: Charles Dhainaut. Git LFS enabled. Global ignore: `.claude/settings.local.json`.
@@ -186,7 +249,9 @@ User: Charles Dhainaut. Git LFS enabled. Global ignore: `.claude/settings.local.
 ├── run_once_install.sh.tmpl            # Bootstrap (packages, tools)
 ├── run_once_setup-system-monitor.sh    # System monitor setup
 ├── bin/
-│   └── executable_system-monitor.sh    # Health monitoring script
+│   ├── executable_system-monitor.sh    # Weekly health monitoring
+│   ├── executable_backup-s3.sh         # S3 Glacier backup
+│   └── executable_emergency-backup.sh  # External disk backup
 ├── dot_wezterm.lua                     # WezTerm
 ├── dot_zshrc                           # Zsh
 ├── dot_zshenv                          # Zsh env (cargo)

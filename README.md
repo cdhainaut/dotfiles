@@ -2,6 +2,8 @@
 
 Terminal-centric development environment for Linux Mint / Ubuntu 24.04, managed with [chezmoi](https://www.chezmoi.io/).
 
+Disaster recovery: see [RECOVERY.md](RECOVERY.md) for step-by-step reinstall guide (partitioning, data restore, credentials, apps).
+
 ## The stack
 
 ```
@@ -244,6 +246,7 @@ User: Charles Dhainaut. Git LFS enabled. Global ignore: `.claude/settings.local.
 ```
 .
 ├── README.md
+├── RECOVERY.md                         # Disaster recovery guide
 ├── dockerfile                          # Docker testing
 ├── test_install.sh                     # Integration tests
 ├── run_once_install.sh.tmpl            # Bootstrap (packages, tools)

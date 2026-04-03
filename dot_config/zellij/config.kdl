@@ -2,6 +2,8 @@
 // CLEAN VERSION - SAME KEYBINDS
 //
 
+default_cwd "/home/charles"
+
 keybinds clear-defaults=true {
     locked {
         bind "Alt g" { SwitchToMode "normal"; }

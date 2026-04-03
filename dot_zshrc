@@ -135,3 +135,11 @@ export NVM_DIR="$HOME/.nvm"
 
 # opencode
 export PATH=/home/charles/.opencode/bin:$PATH
+
+# aliases
+alias ide="zellij -l ~/.config/zellij/layouts/helix-ide.kdl"
+# Claude notifs: mute = coupe le son, disable = coupe tout
+alias mute-claude='touch ~/.claude/hooks/.mute && echo "Claude: son coupé"'
+alias unmute-claude='rm -f ~/.claude/hooks/.mute && echo "Claude: son activé"'
+alias disable-claude='touch ~/.claude/hooks/.disable && echo "Claude: notifs désactivées"'
+alias enable-claude='rm -f ~/.claude/hooks/.disable && echo "Claude: notifs activées"'

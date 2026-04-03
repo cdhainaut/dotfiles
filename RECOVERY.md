@@ -35,11 +35,32 @@ UUID=<uuid-partition-3> /mnt/data ext4 defaults,x-gvfs-hide 0 2
 
 Le `x-gvfs-hide` cache la partition dans le file manager (elle est montée mais pas visible comme un disque externe).
 
-## Étape 1 — Installation de Linux Mint / Ubuntu 24.04
+## Étape 0 — Préparer la clé USB bootable
 
-1. Booter sur clé USB Linux Mint (ou Ubuntu 24.04 LTS)
-2. Installer avec le partitionnement manuel décrit ci-dessus
-3. Utilisateur : `charles`, hostname : `charles-ThinkPad-E16-Gen-3`
+Une clé USB avec Linux Mint 22.3 Cinnamon 64-bit devrait déjà exister. Sinon :
+
+1. Télécharger l'ISO depuis https://linuxmint.com/download.php
+2. Flasher sur une clé USB (min 4 Go) :
+
+```bash
+sudo dd if=linuxmint-22.3-cinnamon-64bit.iso of=/dev/sdX bs=4M status=progress oflag=sync
+```
+
+Remplacer `/dev/sdX` par le device de la clé (`lsblk` pour identifier). **Attention : efface tout sur la clé.**
+
+## Étape 1 — Booter et installer Linux Mint
+
+1. Insérer la clé USB
+2. Redémarrer le ThinkPad et appuyer sur **F12** au logo Lenovo → Boot Menu
+3. Sélectionner la clé USB (EFI)
+4. Choisir "Start Linux Mint"
+5. Depuis le bureau live, lancer l'installeur
+6. Partitionnement **manuel** (voir schéma ci-dessus) :
+   - nvme0n1p1 : 512 Mo, FAT32, monté sur `/boot/efi`
+   - nvme0n1p2 : ~200 Go, EXT4, monté sur `/`
+   - nvme0n1p3 : ~750 Go, EXT4, monté sur `/mnt/data`
+7. Utilisateur : `charles`, hostname : `charles-ThinkPad-E16-Gen-3`
+8. Redémarrer sans la clé
 
 ## Étape 2 — Restaurer /mnt/data
 

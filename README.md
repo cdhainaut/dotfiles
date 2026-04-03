@@ -254,7 +254,8 @@ User: Charles Dhainaut. Git LFS enabled. Global ignore: `.claude/settings.local.
 ├── bin/
 │   ├── executable_system-monitor.sh    # Weekly health monitoring
 │   ├── executable_backup-s3.sh         # S3 Glacier backup
-│   └── executable_emergency-backup.sh  # External disk backup
+│   ├── executable_emergency-backup.sh  # External disk backup
+│   └── executable_verify-recovery.sh   # Post-recovery verification
 ├── dot_wezterm.lua                     # WezTerm
 ├── dot_zshrc                           # Zsh
 ├── dot_zshenv                          # Zsh env (cargo)

@@ -207,14 +207,17 @@ done
 ## Étape 10 — Vérifications finales
 
 ```bash
-# Vérifier que tout fonctionne
+# Test 1 : outils installés (chezmoi)
 bash ~/.local/share/chezmoi/test_install.sh
 
-# Vérifier le monitoring
+# Test 2 : credentials, données, services (post-recovery)
+~/bin/verify-recovery.sh
+
+# Test 3 : monitoring système
 sudo ~/bin/system-monitor.sh
 cat ~/system-health/latest.md
 
-# Vérifier les notifications Claude
+# Test 4 : notifications Claude
 echo '{"notification_type":"idle_prompt","message":"Setup terminé !"}' | ~/.claude/hooks/notify.sh
 
 # Vérifier SysRq

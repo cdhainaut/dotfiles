@@ -104,7 +104,7 @@ Language servers configured:
 | Markdown | - | auto-format |
 | YAML | yamlfmt | auto-format |
 
-AI assistance: helix-gpt + helix-assist (Anthropic API).
+AI assistance: helix-assist (Anthropic API).
 
 Diagnostics display: gutter signs + underlines only (no inline text). Navigate with `]d` / `[d`, details with `Space+d`.
 
@@ -138,8 +138,21 @@ Key aliases:
 | `pj` | Jump to project (fzf in work dir) |
 | `y` | Yazi with cwd tracking |
 | `cpwd` | Copy current path to clipboard |
+| `fp` | Fuzzy find file(s) → copy absolute path(s) to clipboard (Tab = multi-select) |
+| `dp` | Fuzzy find dir(s) → copy absolute path(s) to clipboard (Tab = multi-select) |
 | `mute-claude` | Mute Claude Code notification sounds |
 | `unmute-claude` | Unmute Claude Code notification sounds |
+
+### fzf keybindings
+
+| Binding | Action | Preview |
+|---------|--------|---------|
+| `Ctrl+T` | Paste file path on command line | bat (syntax highlighting) |
+| `Ctrl+R` | Fuzzy search command history | command preview |
+| `Alt+C` | cd into directory | ls -la |
+| `Tab` | Multi-select in fzf | - |
+| `Ctrl+A` | Select all in fzf | - |
+| `Ctrl+D` | Deselect all in fzf | - |
 
 ## Claude Code
 
@@ -200,10 +213,18 @@ Recovery guide on the external disk: `RECOVERY.md`.
 
 ### 2. AWS S3 Glacier (`~/bin/backup-s3.sh`)
 
-Offsite backup, ~$1/mois for ~250 Go.
+Offsite backup, ~$1/mois for ~250 Go. Runs automatically every Sunday at 3:00 via systemd timer (`backup-s3.timer`, `Persistent=true` — catches up after missed runs).
 
 ```bash
+# Manuel
 ~/bin/backup-s3.sh
+
+# Vérifier le timer
+systemctl --user status backup-s3.timer
+systemctl --user list-timers
+
+# Logs
+journalctl --user -u backup-s3.service
 ```
 
 | Bucket | Content |

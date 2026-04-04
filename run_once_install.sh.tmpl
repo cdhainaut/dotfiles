@@ -97,10 +97,11 @@ else
   ok "zellij déjà installé"
 fi
 
-### helix-assist (AI code completion)
+### helix-assist (AI code completion, prebuilt binary)
 if ! command -v helix-assist &>/dev/null; then
   log "Installation de helix-assist"
-  cargo install --quiet helix-assist
+  curl -fsSL "https://github.com/leona/helix-assist/releases/latest/download/helix-assist-linux-amd64" -o /tmp/helix-assist
+  install -m 755 /tmp/helix-assist "$HOME/.local/bin/helix-assist"
   ok "helix-assist"
 fi
 

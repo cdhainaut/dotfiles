@@ -109,7 +109,7 @@ fi
 if ! need_cmd hx; then
   log "Installation de Helix (source)"
   rm -rf /tmp/helix
-  git clone --branch 25.07.1 --depth 1 https://github.com/helix-editor/helix.git /tmp/helix
+  git clone --depth 1 https://github.com/helix-editor/helix.git /tmp/helix
   ( 
     cd /tmp/helix
     # méthode recommandée: build puis install binaire + runtime

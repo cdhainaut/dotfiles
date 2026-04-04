@@ -1,0 +1,4 @@
+# Valeurs par défaut (surchargées par ~/.config/chezmoi/chezmoi.toml [data])
+workDir = "/mnt/data/Work"
+s3BucketBackup = "dhainach-backup"
+s3BucketWork = "cd-work"

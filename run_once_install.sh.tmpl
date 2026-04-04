@@ -225,9 +225,18 @@ else
   ok "Miniconda déjà installé"
 fi
 
-### Python LSPs
-log "Installation de pyright et ruff"
-pip install --quiet pyright ruff
+### uv (Python package manager, remplace pip/pipx/poetry/pyenv)
+if ! need_cmd uv; then
+  log "Installation de uv"
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  export PATH="$HOME/.local/bin:$PATH"
+  ok "uv"
+fi
+
+### Python LSPs (installés via uv tool, isolés)
+log "Installation de pyright et ruff (via uv)"
+uv tool install pyright --quiet 2>/dev/null || uv tool upgrade pyright --quiet
+uv tool install ruff --quiet 2>/dev/null || uv tool upgrade ruff --quiet
 ok "pyright + ruff"
 
 ### Node.js (via nvm) + Claude Code
@@ -277,6 +286,7 @@ ver "lazygit" "$(lazygit --version 2>/dev/null | head -n1 || true)"
 ver "lazydocker" "$(lazydocker --version 2>/dev/null || true)"
 ver "yazi" "$(yazi --version 2>/dev/null || true)"
 ver "plank" "$(plank --version 2>/dev/null || echo 'installed')"
+ver "uv" "$(uv --version 2>/dev/null || echo 'not found')"
 ver "pyright" "$(pyright --version 2>/dev/null || echo 'not found')"
 ver "ruff" "$(ruff --version 2>/dev/null || echo 'not found')"
 ver "shfmt" "$(shfmt --version 2>/dev/null || echo 'not found')"

@@ -93,8 +93,9 @@ CI runs on every push via `.github/workflows/test-dotfiles.yml`.
 | Zellij | Yes (cargo install) | - | - |
 | Yazi | Yes (GitHub release) | - | - |
 | Lazygit | Yes (GitHub release) | - | - |
-| pyright | Yes (pip) | - | - |
-| ruff | Yes (pip) | - | - |
+| uv | Yes (installer script) | - | - |
+| pyright | Yes (uv tool) | - | - |
+| ruff | Yes (uv tool) | - | - |
 | shfmt | Yes (GitHub release) | - | - |
 | yamlfmt | Yes (GitHub release) | - | - |
 | helix-assist | Yes (cargo) | - | Yes (AI completion) |

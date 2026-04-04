@@ -158,7 +158,7 @@ fi
 if ! command -v yamlfmt &>/dev/null; then
   log "Installation de yamlfmt"
   YAMLFMT_VERSION=$(curl -fsSL "https://api.github.com/repos/google/yamlfmt/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-  curl -fsSL "https://github.com/google/yamlfmt/releases/download/v${YAMLFMT_VERSION}/yamlfmt_${YAMLFMT_VERSION}_linux_amd64.tar.gz" | tar xzf - -C /tmp yamlfmt
+  curl -fsSL "https://github.com/google/yamlfmt/releases/download/v${YAMLFMT_VERSION}/yamlfmt_${YAMLFMT_VERSION}_Linux_x86_64.tar.gz" | tar xzf - -C /tmp yamlfmt
   install -m 755 /tmp/yamlfmt "$HOME/.local/bin/yamlfmt"
   ok "yamlfmt $YAMLFMT_VERSION"
 fi

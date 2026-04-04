@@ -9,18 +9,25 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
       - name: Build test Docker image
         run: docker build -t chezmoi-test .
-      - name: Run container and apply chezmoi
+
+      - name: Apply chezmoi and run tests
         run: |
-          docker run --rm chezmoi-test bash -c '
-            set -eu
-            export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/miniconda/bin:$PATH"
+          docker run --rm \
+            -v "${{ github.workspace }}:/tmp/dotfiles-src:ro" \
+            chezmoi-test bash -c '
+              set -eu
+              export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/miniconda/bin:$PATH"
 
-            # Install and apply chezmoi
-            sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
-            chezmoi init --apply github.com/${{ github.repository }}
+              # Apply from mounted local repo (faster, no extra git clone)
+              chezmoi init --apply --source /tmp/dotfiles-src
 
-            # Run test suite
-            bash "$HOME/.local/share/chezmoi/test_install.sh"
-          '
+              # Load nvm if installed
+              export NVM_DIR="$HOME/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" || true
+
+              # Run test suite
+              bash /tmp/dotfiles-src/test_install.sh
+            '

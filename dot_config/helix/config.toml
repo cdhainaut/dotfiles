@@ -3,16 +3,40 @@ theme = "dark_plus"
 # theme = "catppuccin_macchiato"
 # theme = "dark_plus"
 [editor]
-bufferline="always"
+bufferline = "always"
+line-number = "absolute"
+cursorline = true
+scrolloff = 8
+color-modes = true
+popup-border = "all"
+rulers = [88]
+true-color = true
+trim-trailing-whitespace = true
 # Diagnostics: on désactive tout le texte inline (end-of-line + blocs multi-lignes).
 # Les soulignements et marqueurs gouttière restent actifs.
 # Détails visibles via Space+d (picker) ou ]d/[d (navigation).
 end-of-line-diagnostics = "disable"
 
+[editor.auto-save]
+focus-lost = true
+
 [editor.inline-diagnostics]
 cursor-line = "disable"
 other-lines = "disable"
 
+[editor.indent-guides]
+render = true
+character = "│"
+skip-levels = 1
+
+[editor.statusline]
+left = ["mode", "spinner", "version-control", "spacer", "file-name", "read-only-indicator", "file-modification-indicator"]
+center = []
+right = ["diagnostics", "selections", "position", "total-line-numbers", "file-encoding", "file-type"]
+separator = "│"
+mode.normal = "NOR"
+mode.insert = "INS"
+mode.select = "SEL"
 
 [editor.cursor-shape]
 insert = "bar"
@@ -20,6 +44,9 @@ normal = "block"
 select = "underline"
 
 [keys.normal]
+C-s = ":write"
+C-p = "file_picker"
+C-b = "buffer_picker"
 "(" = "goto_prev_paragraph"
 ")" = "goto_next_paragraph"
 "G" = "goto_file_end"
@@ -52,6 +79,12 @@ C-y = [
 
 [keys.normal.space]
 "q" = ":buffer-close"
+"Q" = ":buffer-close!"
+"o" = ":buffer-close-others"
+"w" = ":write"
+
+[keys.insert]
+C-s = [":write", "normal_mode"]
 
 [keys.select]
 "(" = "goto_prev_paragraph"

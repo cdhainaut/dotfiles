@@ -17,7 +17,18 @@
   },
   "enabledPlugins": {
     "clangd-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "gitlab@claude-plugins-official": false
+    "pyright-lsp@claude-plugins-official": true
+  },
+  "mcpServers": {
+    "gitlab": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@zereight/mcp-gitlab"
+      ],
+      "env": {
+        "GITLAB_API_URL": "https://gitlab.deploy.science/api/v4"
+      }
+    }
   }
 }

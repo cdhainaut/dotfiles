@@ -1,24 +1,16 @@
 # ~/.config/helix/languages.toml
+
+# ── Language servers ──────────────────────────────────────────────
+
 [language-server.helix-assist]
 command = "helix-assist"
-# Optional
 args = ["--handler", "anthropic", "--num-suggestions", "2"]
 
-
-[language-server.gpt]
-command = "helix-gpt"
+# helix-gpt supprimé: archivé janv. 2026, remplacé par helix-assist
 
 [language-server.pyright]
 command = "pyright-langserver"
 args = ["--stdio"]
-
-[language-server.wakatime]
-command = "wakatime-ls"
-
-
-[language-server.clangd]
-command = "clangd"
-args = ["--background-index", "--clang-tidy"]
 
 # Pyright: mode "basic" pour matcher le comportement de Pylance (VS Code).
 # "standard" (défaut pyright) est trop strict pour du prototypage.
@@ -45,33 +37,58 @@ reportOptionalCall = "warning"
 command = "ruff"
 args = ["server"]
 
+[language-server.wakatime]
+command = "wakatime-ls"
+
+[language-server.clangd]
+command = "clangd"
+args = ["--background-index", "--clang-tidy"]
+
+# ── Languages ─────────────────────────────────────────────────────
 
 [[language]]
 name = "python"
-language-servers = [ "pyright", "ruff","gpt","wakatime" ]
+language-servers = [
+  "pyright",
+  { name = "ruff", only-features = ["format", "diagnostics", "code-action"] },
+  "helix-assist",
+  "wakatime",
+]
 auto-format = true
 
+[[language]]
+name = "cpp"
+auto-format = true
+formatter = { command = "clang-format" }
+language-servers = ["clangd", "helix-assist"]
 
 [[language]]
 name = "markdown"
-language-servers = [ "gpt","wakatime" ]
+language-servers = ["helix-assist", "wakatime"]
 auto-format = true
+soft-wrap.enable = true
 
 [[language]]
 name = "yaml"
 file-types = ["yaml", "yml"]
-language-servers = [ "gpt","wakatime" ]
+language-servers = ["helix-assist", "wakatime"]
 formatter = { command = "yamlfmt", args = ["-"] }
 auto-format = true
 
 [[language]]
 name = "javascript"
 file-types = ["js", "cjs", "mjs", "bic", "boc"]
-language-servers = ["gpt","wakatime"]
-
+language-servers = ["helix-assist", "wakatime"]
 
 [[language]]
-name = "cpp"
+name = "toml"
 auto-format = true
-formatter = { command = "clang-format" }
-language-servers = ["gpt","clangd"]
+
+[[language]]
+name = "json"
+auto-format = true
+
+[[language]]
+name = "bash"
+auto-format = true
+formatter = { command = "shfmt", args = ["-i", "2", "-"] }

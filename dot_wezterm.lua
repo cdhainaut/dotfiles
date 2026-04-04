@@ -28,8 +28,7 @@ config.color_scheme = 'Espresso'
 -- config.color_scheme = 'Catppuccin Macchiato (Gogh)'
 -- config.color_scheme = 'Gruvbox Dark (Gogh)'
 -- config.color_scheme = 'Afterglow (Gogh)'
-config.window_background_opacity = 0.97
--- config.window_decorations = 'RESIZE|INTEGRATED_BUTTONS'
+config.window_background_opacity = 0.98
 config.window_decorations = 'RESIZE'
 
 -- === Lancer Zellij par défaut ===

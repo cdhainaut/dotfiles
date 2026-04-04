@@ -70,6 +70,7 @@ TMPTAR=$(mktemp /tmp/home-critical-XXXX.tar.gz)
 tar czf "$TMPTAR" \
     -C /home/charles \
     .ssh .gnupg .config/gh .docker .cdsapirc .private_keys \
+    .gitlab_wds_token .aws \
     .zsh_history .bash_history \
     2>/dev/null
 $AWS s3 cp "$TMPTAR" "$BUCKET/home/credentials-$DATE.tar.gz" $STORAGE --quiet && ok "Credentials (chiffré en tar.gz)" || err "Credentials"

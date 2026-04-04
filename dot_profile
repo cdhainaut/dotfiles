@@ -32,12 +32,31 @@ export dev="$work/CDYYY-Dev"
 export pyutils="$dev/python-utils"
 export LC_NUMERIC="en_US.UTF-8"
 
+# ── fzf ──────────────────────────────────────────────────────────────
+# Raccourcis :
+#   Ctrl-T  → chercher un fichier, coller le path sur la ligne de commande
+#   Ctrl-R  → recherche fuzzy dans l'historique
+#   Alt-C   → cd dans un dossier
+#   fp      → chercher fichier(s) → copie path(s) absolu(s) dans le clipboard
+#   dp      → chercher dossier(s) → copie path(s) absolu(s) dans le clipboard
+#   Tab     → multi-select, Ctrl-A → tout sélectionner, Ctrl-D → tout désélectionner
+
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_OPTS='--height=60% --reverse --border --bind ctrl-a:select-all,ctrl-d:deselect-all'
+
+export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_OPTS='--preview "bat -n --color=always --line-range :50 {}"'
+
+export FZF_CTRL_R_OPTS='--preview "echo {}" --preview-window=down:3:wrap'
+
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+export FZF_ALT_C_OPTS='--preview "ls --color=always -la {} | head -20"'
+
 if [[ $- == *i* ]]; then
   [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
   [ -f /usr/share/doc/fzf/examples/completion.zsh ]   && source /usr/share/doc/fzf/examples/completion.zsh
-  # autoload -Uz compinit && compinit
-    autoload -Uz compinit
-    compinit -C
+  autoload -Uz compinit
+  compinit -C
 fi
 
 
@@ -105,6 +124,24 @@ alias rdp-rhino='xfreerdp /v:192.168.0.112 /u:wds /gfx /network:lan /dynamic-res
 
 # cpwd
 alias cpwd='pwd | xclip -selection clipboard'
+
+# fp : fuzzy find fichiers → copie les paths absolus dans le clipboard (Tab = multi-select)
+fp() {
+  local sel
+  sel=$(fd --type f --hidden --follow --exclude .git --absolute-path | \
+    fzf --multi --preview 'bat -n --color=always --line-range :50 {}' \
+        --height=60% --reverse --bind 'ctrl-a:select-all,ctrl-d:deselect-all')
+  [ -n "$sel" ] && echo "$sel" | xclip -selection clipboard && echo "$sel"
+}
+
+# dp : fuzzy find dossiers → copie les paths absolus dans le clipboard (Tab = multi-select)
+dp() {
+  local sel
+  sel=$(fd --type d --hidden --follow --exclude .git --absolute-path | \
+    fzf --multi --preview 'ls --color=always -la {} | head -20' \
+        --height=60% --reverse --bind 'ctrl-a:select-all,ctrl-d:deselect-all')
+  [ -n "$sel" ] && echo "$sel" | xclip -selection clipboard && echo "$sel"
+}
 # 
 ## StarCCM+
 

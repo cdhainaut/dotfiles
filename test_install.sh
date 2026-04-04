@@ -44,11 +44,16 @@ check "fzf"          "fzf --version"
 check "fd"           "fd --version"
 check "bat"          "bat --version"
 check "eza"          "eza --version"
+check "shfmt"        "shfmt --version"
+check "yamlfmt"      "yamlfmt --version"
+check "wmctrl"       "wmctrl --version || which wmctrl"
 
 # Langages / runtimes
 check "rust"         "rustc --version"
 check "cargo"        "cargo --version"
 check "conda"        "conda --version || test -f \$HOME/miniconda/bin/conda"
+check "pyright"      "pyright --version"
+check "ruff"         "ruff --version"
 check "claude"       "claude --version"
 check "gh"           "gh --version"
 

@@ -1,0 +1,10 @@
+[Unit]
+Description=Backup S3 hebdomadaire (Glacier)
+
+[Service]
+Type=oneshot
+ExecStart={{ .chezmoi.homeDir }}/bin/backup-s3.sh
+StandardOutput=append:{{ .chezmoi.homeDir }}/system-health/backup-s3.log
+StandardError=append:{{ .chezmoi.homeDir }}/system-health/backup-s3.log
+Environment=HOME={{ .chezmoi.homeDir }}
+Environment=PATH={{ .chezmoi.homeDir }}/.local/bin:{{ .chezmoi.homeDir }}/miniconda/bin:/usr/local/bin:/usr/bin:/bin

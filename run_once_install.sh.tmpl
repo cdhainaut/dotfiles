@@ -30,7 +30,7 @@ $SUDO apt-get upgrade -y
 log "Paquets de base"
 $SUDO apt-get install -y \
   build-essential curl git unzip ca-certificates pkg-config cmake ninja-build gettext \
-  zsh ripgrep fzf fd-find bat eza plank
+  zsh ripgrep fzf fd-find bat eza plank wmctrl
 
 # Ubuntu: fd -> fdfind, bat -> batcat
 if ! need_cmd fd && [ -x /usr/bin/fdfind ]; then
@@ -97,11 +97,18 @@ else
   ok "zellij déjà installé"
 fi
 
+### helix-assist (AI code completion)
+if ! command -v helix-assist &>/dev/null; then
+  log "Installation de helix-assist"
+  cargo install --quiet helix-assist
+  ok "helix-assist"
+fi
+
 ### 5. Helix depuis la source (runtime inclus)
 if ! need_cmd hx; then
   log "Installation de Helix (source)"
   rm -rf /tmp/helix
-  git clone --depth 1 https://github.com/helix-editor/helix.git /tmp/helix
+  git clone --branch 25.07.1 --depth 1 https://github.com/helix-editor/helix.git /tmp/helix
   ( 
     cd /tmp/helix
     # méthode recommandée: build puis install binaire + runtime
@@ -135,6 +142,24 @@ if ! need_cmd lazydocker; then
   ok "lazydocker $LAZYDOCKER_VERSION installé"
 else
   ok "lazydocker déjà installé"
+fi
+
+### shfmt (shell formatter)
+if ! command -v shfmt &>/dev/null; then
+  log "Installation de shfmt"
+  SHFMT_VERSION=$(curl -fsSL "https://api.github.com/repos/mvdan/sh/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+  curl -fsSL "https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/shfmt_v${SHFMT_VERSION}_linux_amd64" -o /tmp/shfmt
+  install -m 755 /tmp/shfmt "$HOME/.local/bin/shfmt"
+  ok "shfmt $SHFMT_VERSION"
+fi
+
+### yamlfmt (YAML formatter)
+if ! command -v yamlfmt &>/dev/null; then
+  log "Installation de yamlfmt"
+  YAMLFMT_VERSION=$(curl -fsSL "https://api.github.com/repos/google/yamlfmt/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+  curl -fsSL "https://github.com/google/yamlfmt/releases/download/v${YAMLFMT_VERSION}/yamlfmt_${YAMLFMT_VERSION}_linux_amd64.tar.gz" | tar xzf - -C /tmp yamlfmt
+  install -m 755 /tmp/yamlfmt "$HOME/.local/bin/yamlfmt"
+  ok "yamlfmt $YAMLFMT_VERSION"
 fi
 
 ### 8. Yazi (prebuilt binary)
@@ -199,6 +224,11 @@ else
   ok "Miniconda déjà installé"
 fi
 
+### Python LSPs
+log "Installation de pyright et ruff"
+pip install --quiet pyright ruff
+ok "pyright + ruff"
+
 ### Node.js (via nvm) + Claude Code
 if ! need_cmd claude; then
   if ! need_cmd npm; then
@@ -246,6 +276,10 @@ ver "lazygit" "$(lazygit --version 2>/dev/null | head -n1 || true)"
 ver "lazydocker" "$(lazydocker --version 2>/dev/null || true)"
 ver "yazi" "$(yazi --version 2>/dev/null || true)"
 ver "plank" "$(plank --version 2>/dev/null || echo 'installed')"
+ver "pyright" "$(pyright --version 2>/dev/null || echo 'not found')"
+ver "ruff" "$(ruff --version 2>/dev/null || echo 'not found')"
+ver "shfmt" "$(shfmt --version 2>/dev/null || echo 'not found')"
+ver "yamlfmt" "$(yamlfmt --version 2>/dev/null || echo 'not found')"
 ver "claude" "$(claude --version 2>/dev/null || true)"
 ver "gh" "$(gh --version 2>/dev/null | head -n1 || true)"
 

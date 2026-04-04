@@ -27,7 +27,7 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 
 
-export work="/mnt/data/Work"
+export work="{{ .workDir }}"
 export dev="$work/CDYYY-Dev"
 export pyutils="$dev/python-utils"
 export LC_NUMERIC="en_US.UTF-8"
@@ -146,7 +146,7 @@ dp() {
 ## StarCCM+
 
 alias star13="/opt/CD-adapco/13.04.011-R8/STAR-CCM+13.04.011-R8/star/bin/starccm+"
-export CDLMD_LICENSE_FILE="/home/charles/Documents/license.dat"
+export CDLMD_LICENSE_FILE="{{ .chezmoi.homeDir }}/Documents/license.dat"
 
 #export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
 . "$HOME/.cargo/env"

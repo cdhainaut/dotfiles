@@ -22,7 +22,7 @@ jobs:
               export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/miniconda/bin:$PATH"
 
               # Apply from mounted local repo (faster, no extra git clone)
-              chezmoi init --apply --source /tmp/dotfiles-src
+              chezmoi init --apply --source /tmp/dotfiles-src --exclude=encrypted
 
               # Load nvm if installed
               export NVM_DIR="$HOME/.nvm"

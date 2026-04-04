@@ -1,5 +1,5 @@
-{{- if not (stat (joinPath .chezmoi.homeDir ".config/chezmoi/key.txt")) }}
-# En CI ou sur une machine sans clé age, ignorer les fichiers chiffrés
+{{- if ne .chezmoi.config.encryption "age" }}
+# Sans encryption age configurée (CI, machine neuve), ignorer les fichiers chiffrés
 .private_keys
 .gitlab_wds_token
 .aws

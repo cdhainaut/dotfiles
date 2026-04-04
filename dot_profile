@@ -117,9 +117,9 @@ alias ld="lazydocker"
 alias zj="zellij"
 
 
-# DMG
-alias rdp-dmg='xfreerdp /v:192.168.100.10 /u:team /sec:rdp /gfx /network:lan /dynamic-resolution /microphone:off /p:***RDP_PASS_REDACTED***'
-alias rdp-rhino='xfreerdp /v:192.168.0.112 /u:wds /gfx /network:lan /dynamic-resolution /microphone:off /p:***RDP_PASS_REDACTED***'
+# RDP (credentials dans ~/.private_keys)
+alias rdp-dmg='xfreerdp /v:"$RDP_DMG_HOST" /u:"$RDP_DMG_USER" /sec:rdp /gfx /network:lan /dynamic-resolution /microphone:off /p:"$RDP_DMG_PASS"'
+alias rdp-rhino='xfreerdp /v:"$RDP_RHINO_HOST" /u:"$RDP_RHINO_USER" /gfx /network:lan /dynamic-resolution /microphone:off /p:"$RDP_RHINO_PASS"'
 
 
 # cpwd

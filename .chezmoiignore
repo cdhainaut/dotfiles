@@ -5,3 +5,9 @@
 .aws
 .cdsapirc
 {{- end }}
+
+{{- if eq .profile "headless" }}
+# Headless: pas de GUI
+.wezterm.lua
+.local/share/plank
+{{- end }}

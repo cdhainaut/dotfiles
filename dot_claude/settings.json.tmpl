@@ -2,6 +2,7 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
+{{- if eq .profile "desktop" }}
   "hooks": {
     "Notification": [
       {
@@ -15,6 +16,7 @@
       }
     ]
   },
+{{- end }}
   "enabledPlugins": {
     "clangd-lsp@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true

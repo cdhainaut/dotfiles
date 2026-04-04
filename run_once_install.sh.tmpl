@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Options
-: "${HEADLESS:=0}"   # HEADLESS=1 pour skipper les app GUI (wezterm)
+: "${HEADLESS:={{ if eq .profile "headless" }}1{{ else }}0{{ end }}}"   # Auto-set from chezmoi profile
 export DEBIAN_FRONTEND=noninteractive
 : "${TZ:=Europe/Paris}"    # force la timezone (override possible à l'env)
 
@@ -30,7 +30,7 @@ $SUDO apt-get upgrade -y
 log "Paquets de base"
 $SUDO apt-get install -y \
   build-essential curl git unzip ca-certificates pkg-config cmake ninja-build gettext \
-  zsh ripgrep fzf fd-find bat eza plank wmctrl
+  zsh ripgrep fzf fd-find bat eza{{ if eq .profile "desktop" }} plank wmctrl xclip{{ end }}
 
 # Ubuntu: fd -> fdfind, bat -> batcat
 if ! need_cmd fd && [ -x /usr/bin/fdfind ]; then

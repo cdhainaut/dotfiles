@@ -1,0 +1,32 @@
+# ~/.shell/aliases.sh — shell aliases
+
+# Conda
+alias ca="conda activate"
+
+# Dev tools
+alias lg="lazygit"
+alias ld="lazydocker"
+alias zj="zellij"
+
+# Clipboard (fallback: just print to stdout)
+if command -v xclip &>/dev/null; then
+  alias cpwd='pwd | xclip -selection clipboard && pwd'
+else
+  alias cpwd='pwd'
+fi
+
+{{- if eq .profile "desktop" }}
+
+# RDP (credentials dans ~/.private_keys)
+alias rdp-dmg='xfreerdp /v:"$RDP_DMG_HOST" /u:"$RDP_DMG_USER" /sec:rdp /gfx /network:lan /dynamic-resolution /microphone:off /p:"$RDP_DMG_PASS"'
+alias rdp-rhino='xfreerdp /v:"$RDP_RHINO_HOST" /u:"$RDP_RHINO_USER" /gfx /network:lan /dynamic-resolution /microphone:off /p:"$RDP_RHINO_PASS"'
+
+# Claude notifs: mute = coupe le son, disable = coupe tout
+alias mute-claude='touch ~/.claude/hooks/.mute && echo "Claude: son coupé"'
+alias unmute-claude='rm -f ~/.claude/hooks/.mute && echo "Claude: son activé"'
+alias disable-claude='touch ~/.claude/hooks/.disable && echo "Claude: notifs désactivées"'
+alias enable-claude='rm -f ~/.claude/hooks/.disable && echo "Claude: notifs activées"'
+
+# StarCCM+
+alias star13="/opt/CD-adapco/13.04.011-R8/STAR-CCM+13.04.011-R8/star/bin/starccm+"
+{{- end }}

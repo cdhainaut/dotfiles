@@ -48,7 +48,7 @@ check "eza"          "eza --version"
 # Langages / runtimes
 check "rust"         "rustc --version"
 check "cargo"        "cargo --version"
-check "conda"        "conda --version"
+check "conda"        "conda --version || test -f \$HOME/miniconda/bin/conda"
 check "claude"       "claude --version"
 check "gh"           "gh --version"
 

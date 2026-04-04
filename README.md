@@ -84,6 +84,23 @@ docker run --rm -it -v ~/.local/share/chezmoi:/tmp/dotfiles-src:ro dotfiles bash
 
 CI runs on every push via `.github/workflows/test-dotfiles.yml`.
 
+## Dependencies
+
+| Component | Installed by bootstrap | Manual install | Optional |
+|-----------|----------------------|----------------|----------|
+| Helix | Yes (from source, pinned) | - | - |
+| Neovim | Yes (from source, stable) | - | - |
+| Zellij | Yes (cargo install) | - | - |
+| Yazi | Yes (GitHub release) | - | - |
+| Lazygit | Yes (GitHub release) | - | - |
+| pyright | Yes (pip) | - | - |
+| ruff | Yes (pip) | - | - |
+| shfmt | Yes (GitHub release) | - | - |
+| yamlfmt | Yes (GitHub release) | - | - |
+| helix-assist | Yes (cargo) | - | Yes (AI completion) |
+| wmctrl | Yes (apt) | - | Desktop only |
+| wakatime-ls | No | `cargo install` | Yes (time tracking) |
+
 ## Keybinding philosophy
 
 Modifier keys are split by tool to avoid conflicts:

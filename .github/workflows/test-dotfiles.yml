@@ -30,4 +30,9 @@ jobs:
 
               # Run test suite
               bash /tmp/dotfiles-src/test_install.sh
+
+              # LSP health check (informational, non-blocking)
+              echo "=== Helix LSP health ==="
+              hx --health python 2>&1 | head -5 || true
+              hx --health cpp 2>&1 | head -5 || true
             '

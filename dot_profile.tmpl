@@ -1,152 +1,17 @@
-# ~/.profile: executed by the command interpreter for login shells.
-# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
-# exists.
-# see /usr/share/doc/bash/examples/startup-files for examples.
-# the files are located in the bash-doc package.
-
-# the default umask is set in /etc/profile; for setting the umask
-# for ssh logins, install and configure the libpam-umask package.
-#umask 022
+# ~/.profile — sources modular shell config
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
 	. "$HOME/.bashrc"
     fi
 fi
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
+[[ -e ~/.private_keys ]] && . ~/.private_keys
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
+for f in ~/.shell/path.sh ~/.shell/fzf.sh ~/.shell/projects.sh ~/.shell/aliases.sh ~/.shell/tools.sh; do
+  [[ -e "$f" ]] && . "$f"
+done
 
-
-export work="{{ .workDir }}"
-export dev="$work/CDYYY-Dev"
-export pyutils="$dev/python-utils"
-export LC_NUMERIC="en_US.UTF-8"
-
-# ── fzf ──────────────────────────────────────────────────────────────
-# Raccourcis :
-#   Ctrl-T  → chercher un fichier, coller le path sur la ligne de commande
-#   Ctrl-R  → recherche fuzzy dans l'historique
-#   Alt-C   → cd dans un dossier
-#   fp      → chercher fichier(s) → copie path(s) absolu(s) dans le clipboard
-#   dp      → chercher dossier(s) → copie path(s) absolu(s) dans le clipboard
-#   Tab     → multi-select, Ctrl-A → tout sélectionner, Ctrl-D → tout désélectionner
-
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-export FZF_DEFAULT_OPTS='--height=60% --reverse --border --bind ctrl-a:select-all,ctrl-d:deselect-all'
-
-export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
-export FZF_CTRL_T_OPTS='--preview "bat -n --color=always --line-range :50 {}"'
-
-export FZF_CTRL_R_OPTS='--preview "echo {}" --preview-window=down:3:wrap'
-
-export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
-export FZF_ALT_C_OPTS='--preview "ls --color=always -la {} | head -20"'
-
-if [[ $- == *i* ]]; then
-  [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-  [ -f /usr/share/doc/fzf/examples/completion.zsh ]   && source /usr/share/doc/fzf/examples/completion.zsh
-  autoload -Uz compinit
-  compinit -C
-fi
-
-
-pj() {
-    # Find only directories, max depth 1, skip WORK_DIR itself
-    local proj
-    proj=$(find "$work" -mindepth 1 -maxdepth 3 -type d | sort | fzf --prompt="Select project: " --height=40% --reverse)
-
-    if [ -n "$proj" ]; then
-        cd "$proj" || return
-        echo "📂 Jumped to: $proj"
-    else
-        echo "❌ No project selected."
-    fi
-}
-
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
-}
-
-## Yabridge
-
-export PATH="$PATH:$HOME/.local/share/yabridge"
-
-# XFoil
-
-export PATH="$PATH:/home/codes/bin"
-
-#chezmoi
-export PATH="$HOME/.local/bin:$PATH"
-
-
-# Go
-export PATH="$PATH:$HOME/go/bin"
-
-# Helix
-# 
-if [ -f "$HOME/.private_keys" ]; then
-    . "$HOME/.private_keys"
-fi
-export HANDLER=copilot
-# export HANDLER=anthropic
-# export ANTHROPIC_API_KEY=1234
-
-#export HANDLER=codeium
-export HELIX_RUNTIME=~/src/helix/runtime
-
-# Conda shorthand
-alias ca="conda activate"
-# 
-# Lazygit
-alias lg="lazygit"
-alias ld="lazydocker"
-alias zj="zellij"
-
-
-# RDP (credentials dans ~/.private_keys)
-alias rdp-dmg='xfreerdp /v:"$RDP_DMG_HOST" /u:"$RDP_DMG_USER" /sec:rdp /gfx /network:lan /dynamic-resolution /microphone:off /p:"$RDP_DMG_PASS"'
-alias rdp-rhino='xfreerdp /v:"$RDP_RHINO_HOST" /u:"$RDP_RHINO_USER" /gfx /network:lan /dynamic-resolution /microphone:off /p:"$RDP_RHINO_PASS"'
-
-
-# cpwd
-alias cpwd='pwd | xclip -selection clipboard'
-
-# fp : fuzzy find fichiers → copie les paths absolus dans le clipboard (Tab = multi-select)
-fp() {
-  local sel
-  sel=$(fd --type f --hidden --follow --exclude .git --absolute-path | \
-    fzf --multi --preview 'bat -n --color=always --line-range :50 {}' \
-        --height=60% --reverse --bind 'ctrl-a:select-all,ctrl-d:deselect-all')
-  [ -n "$sel" ] && echo "$sel" | xclip -selection clipboard && echo "$sel"
-}
-
-# dp : fuzzy find dossiers → copie les paths absolus dans le clipboard (Tab = multi-select)
-dp() {
-  local sel
-  sel=$(fd --type d --hidden --follow --exclude .git --absolute-path | \
-    fzf --multi --preview 'ls --color=always -la {} | head -20' \
-        --height=60% --reverse --bind 'ctrl-a:select-all,ctrl-d:deselect-all')
-  [ -n "$sel" ] && echo "$sel" | xclip -selection clipboard && echo "$sel"
-}
-# 
-## StarCCM+
-
-alias star13="/opt/CD-adapco/13.04.011-R8/STAR-CCM+13.04.011-R8/star/bin/starccm+"
-export CDLMD_LICENSE_FILE="{{ .chezmoi.homeDir }}/Documents/license.dat"
-
-#export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
+# Cargo/Rust
 . "$HOME/.cargo/env"

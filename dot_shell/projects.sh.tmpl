@@ -1,0 +1,18 @@
+# ~/.shell/projects.sh — project navigation and work directories
+
+export work="{{ .workDir }}"
+export dev="$work/CDYYY-Dev"
+export pyutils="$dev/python-utils"
+
+pj() {
+    # Find only directories, max depth 1, skip WORK_DIR itself
+    local proj
+    proj=$(find "$work" -mindepth 1 -maxdepth 3 -type d | sort | fzf --prompt="Select project: " --height=40% --reverse)
+
+    if [ -n "$proj" ]; then
+        cd "$proj" || return
+        echo "📂 Jumped to: $proj"
+    else
+        echo "❌ No project selected."
+    fi
+}

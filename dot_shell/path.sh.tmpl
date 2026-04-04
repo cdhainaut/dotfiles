@@ -1,0 +1,32 @@
+# ~/.shell/path.sh — PATH exports and environment variables
+
+# User private bins
+if [ -d "$HOME/bin" ]; then
+    PATH="$HOME/bin:$PATH"
+fi
+if [ -d "$HOME/.local/bin" ]; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+# Yabridge
+export PATH="$PATH:$HOME/.local/share/yabridge"
+
+# XFoil
+export PATH="$PATH:/home/codes/bin"
+
+# Go
+export PATH="$PATH:$HOME/go/bin"
+
+# Helix
+export HANDLER=copilot
+# export HANDLER=anthropic
+# export ANTHROPIC_API_KEY=1234
+#export HANDLER=codeium
+export HELIX_RUNTIME=~/src/helix/runtime
+
+# StarCCM+
+export CDLMD_LICENSE_FILE="{{ .chezmoi.homeDir }}/Documents/license.dat"
+#export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
+
+# Locale
+export LC_NUMERIC="en_US.UTF-8"

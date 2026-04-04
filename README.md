@@ -261,9 +261,9 @@ journalctl --user -u backup-s3.service
 
 | Bucket | Content |
 |--------|---------|
-| `s3://cd-work/` | /mnt/data/Work (hors vidéos) |
-| `s3://dhainach-backup/data/` | Personnal, Administrative, Software |
-| `s3://dhainach-backup/home/` | Credentials (tar.gz), Claude Code, Documents, chezmoi, conda envs, system health |
+| `s3://<work-bucket>/` | /mnt/data/Work (hors vidéos) |
+| `s3://<backup-bucket>/data/` | Personnal, Administrative, Software |
+| `s3://<backup-bucket>/home/` | Credentials (tar.gz), Claude Code, Documents, chezmoi, conda envs, system health |
 
 ### 3. Git (chezmoi + GitHub)
 

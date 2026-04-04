@@ -11,7 +11,7 @@ Guide pour repartir d'une config propre en cas de remplacement du NVMe ou réins
 - **Machine** : Lenovo ThinkPad E16 Gen 3 (AMD)
 - **CPU** : AMD Ryzen (16 threads)
 - **RAM** : 29 Gio (1x32 Go SO-DIMM)
-- **Disque** : Kioxia KBG6AZNT1T02 1 To NVMe (S/N: 5FVPSNAAZ2B7)
+- **Disque** : Kioxia KBG6AZNT1T02 1 To NVMe (S/N: <SERIAL>)
 
 ## Schéma de partitionnement
 
@@ -59,7 +59,7 @@ Remplacer `/dev/sdX` par le device de la clé (`lsblk` pour identifier). **Atten
    - nvme0n1p1 : 512 Mo, FAT32, monté sur `/boot/efi`
    - nvme0n1p2 : ~200 Go, EXT4, monté sur `/`
    - nvme0n1p3 : ~750 Go, EXT4, monté sur `/mnt/data`
-7. Utilisateur : `charles`, hostname : `charles-ThinkPad-E16-Gen-3`
+7. Utilisateur : `charles`, hostname : `<hostname>`
 8. Redémarrer sans la clé
 
 ## Étape 2 — Restaurer /mnt/data
@@ -71,12 +71,12 @@ sudo mkdir -p /mnt/data
 # Ajouter la ligne fstab ci-dessus, puis :
 sudo mount /mnt/data
 
-# Brancher le disque externe (il monte automatiquement sur /media/charles/Dhainach)
-sudo rsync -rltD --info=progress2 /media/charles/Dhainach/backup/Work/ /mnt/data/Work/
-sudo rsync -rltD --info=progress2 /media/charles/Dhainach/backup/Media/ /mnt/data/Media/
-sudo rsync -rltD --info=progress2 /media/charles/Dhainach/backup/Personnal/ /mnt/data/Personnal/
-sudo rsync -rltD --info=progress2 /media/charles/Dhainach/backup/Administrative/ /mnt/data/Administrative/
-sudo rsync -rltD --info=progress2 /media/charles/Dhainach/backup/Software/ /mnt/data/Software/
+# Brancher le disque externe (il monte automatiquement sur /media/<user>/<backup-disk>)
+sudo rsync -rltD --info=progress2 /media/<user>/<backup-disk>/backup/Work/ /mnt/data/Work/
+sudo rsync -rltD --info=progress2 /media/<user>/<backup-disk>/backup/Media/ /mnt/data/Media/
+sudo rsync -rltD --info=progress2 /media/<user>/<backup-disk>/backup/Personnal/ /mnt/data/Personnal/
+sudo rsync -rltD --info=progress2 /media/<user>/<backup-disk>/backup/Administrative/ /mnt/data/Administrative/
+sudo rsync -rltD --info=progress2 /media/<user>/<backup-disk>/backup/Software/ /mnt/data/Software/
 sudo chown -R charles:charles /mnt/data
 ```
 
@@ -108,7 +108,7 @@ Puis fermer/rouvrir le terminal.
 Depuis le backup home sur le disque externe :
 
 ```bash
-BACKUP="/media/charles/Dhainach/backup/home-<DATE>"
+BACKUP="/media/<user>/<backup-disk>/backup/home-<DATE>"
 
 # SSH
 cp -r "$BACKUP/.ssh" ~/.ssh
@@ -191,7 +191,7 @@ bash /tmp/miniconda.sh -b -p $HOME/miniconda
 ~/miniconda/bin/conda init zsh
 
 # Restaurer chaque environnement
-CONDA_DIR="/media/charles/Dhainach/backup/conda-envs"
+CONDA_DIR="/media/<user>/<backup-disk>/backup/conda-envs"
 for yml in "$CONDA_DIR"/*.yml; do
     env_name=$(basename "$yml" .yml)
     [ "$env_name" = "base" ] && continue
@@ -210,7 +210,7 @@ Environnements sauvegardés :
 | latest | 425 | Env principal |
 | py311 | 71 | Python 3.11 minimal |
 | py38 | 104 | Python 3.8 legacy |
-| wds | 197 | Projet WDS |
+| wds | 197 | Projet client |
 
 ## Étape 9 — Cloner les repos de travail
 
@@ -268,11 +268,11 @@ pip install awscli
 aws configure  # Access Key + Secret Key (eu-west-3)
 
 # Restaurer Work
-aws s3 sync s3://cd-work/ /mnt/data/Work/
+aws s3 sync s3://<work-bucket>/ /mnt/data/Work/
 
 # Restaurer le reste
-aws s3 sync s3://dhainach-backup/data/ /mnt/data/
-aws s3 sync s3://dhainach-backup/home/ ~/restore-home/
+aws s3 sync s3://<backup-bucket>/data/ /mnt/data/
+aws s3 sync s3://<backup-bucket>/home/ ~/restore-home/
 ```
 
 Note : Glacier nécessite une restauration préalable (quelques heures). Utiliser `aws s3api restore-object` ou la console AWS.
@@ -280,7 +280,7 @@ Note : Glacier nécessite une restauration préalable (quelques heures). Utilise
 ## Fichiers sur ce disque externe
 
 ```
-/media/charles/Dhainach/
+/media/<user>/<backup-disk>/
 ├── RECOVERY.md              ← Ce fichier
 ├── backup/
 │   ├── backup.sh            ← Script de backup rsync

@@ -34,9 +34,11 @@ rsync "${RS[@]}" ~/.gnupg/ "$HOME_BACKUP/.gnupg/" && ok "Clés GPG" || err "GPG 
 # Credentials
 mkdir -p "$HOME_BACKUP/.config"
 rsync "${RS[@]}" ~/.config/gh/ "$HOME_BACKUP/.config/gh/" 2>/dev/null && ok "GitHub CLI" || true
+rsync "${RS[@]}" ~/.config/chezmoi/ "$HOME_BACKUP/.config/chezmoi/" 2>/dev/null && ok "Chezmoi (age key)" || true
 rsync "${RS[@]}" ~/.docker/ "$HOME_BACKUP/.docker/" 2>/dev/null && ok "Docker" || true
 cp ~/.cdsapirc "$HOME_BACKUP/" 2>/dev/null && ok "CDS API" || true
 cp ~/.private_keys "$HOME_BACKUP/" 2>/dev/null && ok "Private keys" || true
+cp ~/.gitlab_wds_token "$HOME_BACKUP/" 2>/dev/null && ok "GitLab token" || true
 
 # Claude Code (settings, projects, mémoires, hooks)
 rsync "${RS[@]}" --copy-links ~/.claude/ "$HOME_BACKUP/.claude/" && ok "Claude Code ($(du -sh ~/.claude/ | cut -f1))" || err "Claude copy failed"

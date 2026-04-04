@@ -21,6 +21,21 @@ terminal    mux        editor
 
 Supporting tools: ripgrep, fzf, fd, bat, eza, glow, lazydocker, neovim (backup editor).
 
+## Secrets management
+
+Credentials are encrypted with [age](https://github.com/FiloSottile/age) and stored in the repo as `.age` files. chezmoi decrypts them transparently on `apply`.
+
+**Encrypted files:** `.private_keys`, `.gitlab_wds_token`, `.aws/credentials`, `.aws/config`, `.cdsapirc`
+
+**Decryption key:** `~/.config/chezmoi/key.txt` — required to restore credentials. **Never committed to git.**
+
+Backed up in:
+
+- S3 Glacier: `credentials-YYYY-MM-DD.tar.gz` (includes `.config/chezmoi/`)
+- External disk: `backup/home-YYYY-MM-DD/.config/chezmoi/`
+
+**Recovery:** restore `key.txt` first, then `chezmoi apply` decrypts everything automatically.
+
 ## Installation
 
 ```bash

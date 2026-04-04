@@ -69,7 +69,7 @@ log "3/5 — Home critique → $BUCKET/home/"
 TMPTAR=$(mktemp /tmp/home-critical-XXXX.tar.gz)
 tar czf "$TMPTAR" \
     -C /home/charles \
-    .ssh .gnupg .config/gh .docker .cdsapirc .private_keys \
+    .ssh .gnupg .config/gh .config/chezmoi .docker .cdsapirc .private_keys \
     .gitlab_wds_token .aws \
     .zsh_history .bash_history \
     2>/dev/null

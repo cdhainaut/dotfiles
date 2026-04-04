@@ -2,7 +2,7 @@
 set -uo pipefail
 
 AWS=~/miniconda/bin/aws
-BUCKET="s3://dhainach-backup"
+BUCKET="s3://{{ .s3BucketBackup }}"
 DATE=$(date +%Y-%m-%d)
 STORAGE="--storage-class GLACIER"
 
@@ -29,7 +29,7 @@ EXCLUDE_MEDIA=(
 # ══════════════════════════════════════════════
 # 1 — /mnt/data/Work (déjà sur cd-work, on met à jour)
 # ══════════════════════════════════════════════
-log "1/6 — Work → s3://cd-work/"
+log "1/6 — Work → s3://{{ .s3BucketWork }}/"
 
 dirs=($(ls -d /mnt/data/Work/*/))
 total=${#dirs[@]}
@@ -39,7 +39,7 @@ for dir in "${dirs[@]}"; do
     i=$((i + 1))
     name=$(basename "$dir")
     printf "  [%d/%d] %s..." "$i" "$total" "$name"
-    $AWS s3 sync "$dir" "s3://cd-work/$name/" \
+    $AWS s3 sync "$dir" "s3://{{ .s3BucketWork }}/$name/" \
         "${EXCLUDE_COMMON[@]}" "${EXCLUDE_MEDIA[@]}" \
         --exclude "_backup_*.tar.gz" \
         $STORAGE --quiet 2>/dev/null && printf " ok\n" || printf " FAIL\n"
@@ -119,7 +119,7 @@ $AWS s3 sync ~/system-health/ "$BUCKET/home/system-health/" \
 log "Backup S3 terminé — $(date)"
 echo ""
 echo "  Buckets utilisés:"
-echo "    s3://cd-work/          — Work (Glacier)"
+echo "    s3://{{ .s3BucketWork }}/          — Work (Glacier)"
 echo "    $BUCKET/data/     — Personnal, Admin, Software"
 echo "    $BUCKET/home/     — Credentials, Claude, Documents, Conda"
 echo ""

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "mammouth": {
+      "name": "Mammouth",
+      "env": ["MAMMOUTH_API_KEY"],
+      "options": {
+        "baseURL": "https://api.mammouth.ai/v1"
+      }
+    }
+  },
+  "model": "mammouth/claude-sonnet-4-6",
+  "small_model": "mammouth/claude-haiku-4-5"
+}

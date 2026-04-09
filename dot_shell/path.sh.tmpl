@@ -28,5 +28,11 @@ export HELIX_RUNTIME=~/src/helix/runtime
 export CDLMD_LICENSE_FILE="{{ .chezmoi.homeDir }}/Documents/license.dat"
 #export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
 
+# OpenCode
+export PATH="$PATH:$HOME/.opencode/bin"
+
+# API keys (age-encrypted via chezmoi)
+[ -f "$HOME/.mammouth_env" ] && source "$HOME/.mammouth_env"
+
 # Locale
 export LC_NUMERIC="en_US.UTF-8"

@@ -17,6 +17,10 @@ fi
 
 {{- if eq .profile "desktop" }}
 
+# Gomboc CIFS mount (soft = pas de freeze si la connexion tombe)
+alias mount-gomboc='sudo mount -t cifs //192.168.100.10/GombocV030 /mnt/data/Work/CD072-WDS/gomboc -o username=team,domain=DMGMORI-SIMU,vers=3.0,uid=$(id -u),gid=$(id -g),file_mode=0664,dir_mode=0775,soft,echo_interval=10,retrans=1,actimeo=30'
+alias umount-gomboc='sudo umount -l -f /mnt/data/Work/CD072-WDS/gomboc'
+
 # RDP (credentials dans ~/.private_keys)
 alias rdp-dmg='xfreerdp /v:"$RDP_DMG_HOST" /u:"$RDP_DMG_USER" /sec:rdp /gfx /network:lan /dynamic-resolution /microphone:off /p:"$RDP_DMG_PASS"'
 alias rdp-rhino='xfreerdp /v:"$RDP_RHINO_HOST" /u:"$RDP_RHINO_USER" /gfx /network:lan /dynamic-resolution /microphone:off /p:"$RDP_RHINO_PASS"'

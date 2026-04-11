@@ -4,6 +4,23 @@
     "opencode-go": {
       "name": "OpenCode Go",
       "options": {}
+    },
+    "ollama": {
+      "name": "Ollama Local",
+      "options": {
+        "baseURL": "http://localhost:11434"
+      },
+      "models": {
+        "qwen2.5-coder:14b": {
+          "name": "Qwen2.5 Coder 14B (Local)"
+        },
+        "qwen2.5-coder:7b": {
+          "name": "Qwen2.5 Coder 7B (Local)"
+        },
+        "deepseek-coder:33b": {
+          "name": "DeepSeek Coder 33B (Local)"
+        }
+      }
     }
   },
   "model": "opencode-go/kimi-k2.5",

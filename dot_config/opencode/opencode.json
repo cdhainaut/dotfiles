@@ -5,24 +5,113 @@
       "name": "OpenCode Go",
       "options": {}
     },
-    "ollama": {
-      "name": "Ollama Local",
-      "options": {
-        "baseURL": "http://localhost:11434"
-      },
+    "openai": {
+      "name": "OpenAI",
+      "options": {},
       "models": {
-        "qwen2.5-coder:14b": {
-          "name": "Qwen2.5 Coder 14B (Local)"
+        "gpt-5.4": {
+          "name": "GPT-5.4",
+          "variants": {
+            "science": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            }
+          }
         },
-        "qwen2.5-coder:7b": {
-          "name": "Qwen2.5 Coder 7B (Local)"
+        "gpt-5.4-mini": {
+          "name": "GPT-5.4 Mini",
+          "variants": {
+            "lean": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low"
+            }
+          }
         },
-        "deepseek-coder:33b": {
-          "name": "DeepSeek Coder 33B (Local)"
+        "gpt-5.4-mini-fast": {
+          "name": "GPT-5.4 Mini Fast",
+          "variants": {
+            "lean": {
+              "reasoningEffort": "none",
+              "textVerbosity": "low"
+            }
+          }
         }
       }
     }
   },
-  "model": "opencode-go/kimi-k2.5",
-  "small_model": "opencode-go/minimax-m2.5"
+  "model": "openai/gpt-5.4-mini",
+  "small_model": "openai/gpt-5.4-mini-fast",
+  "agent": {
+    "build": {
+      "mode": "primary",
+      "description": "Lean build agent: minimal tokens, minimal verbosity.",
+      "model": "openai/gpt-5.4-mini",
+      "temperature": 0.15,
+      "reasoningEffort": "low",
+      "textVerbosity": "low",
+      "steps": 8,
+      "permission": {
+        "webfetch": "deny"
+      }
+    },
+    "plan": {
+      "mode": "primary",
+      "description": "Scientific planning agent: high-grade reasoning, read-only.",
+      "model": "openai/gpt-5.4",
+      "temperature": 0.1,
+      "reasoningEffort": "high",
+      "textVerbosity": "low",
+      "reasoningSummary": "auto",
+      "steps": 7,
+      "permission": {
+        "edit": "deny",
+        "bash": "ask",
+        "webfetch": "ask"
+      }
+    },
+    "cheap-explore": {
+      "mode": "subagent",
+      "description": "Cheap exploration: search and summarize with minimal cost.",
+      "model": "openai/gpt-5.4-mini-fast",
+      "temperature": 0,
+      "reasoningEffort": "none",
+      "textVerbosity": "low",
+      "steps": 4,
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny"
+      }
+    },
+    "science-review": {
+      "mode": "subagent",
+      "description": "Scientific reviewer: checks units, assumptions, numerics, stability.",
+      "model": "openai/gpt-5.4",
+      "temperature": 0.1,
+      "reasoningEffort": "high",
+      "textVerbosity": "low",
+      "reasoningSummary": "auto",
+      "steps": 5,
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "ask"
+      }
+    },
+    "codex-build": {
+      "mode": "subagent",
+      "description": "Code-centric build agent for tests and refactors.",
+      "model": "openai/gpt-5.2-codex",
+      "temperature": 0.1,
+      "reasoningEffort": "low",
+      "textVerbosity": "low",
+      "steps": 8,
+      "permission": {
+        "edit": "ask",
+        "bash": "ask",
+        "webfetch": "deny"
+      }
+    }
+  }
 }

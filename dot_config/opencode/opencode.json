@@ -10,7 +10,7 @@
       "name": "DeepSeek",
       "options": {
         "baseURL": "https://api.deepseek.com/v1",
-        "apiKey": "{{ env "DEEPSEEK_API_KEY" }}"
+        "apiKey": "{env:DEEPSEEK_API_KEY}"
       },
       "models": {
         "deepseek-chat": {
@@ -57,7 +57,7 @@
     }
   },
   "model": "deepseek/deepseek-chat",
-  "small_model": "deepseek/deepseek-chat",
+  "small_model": "opencode/minimax-m2.5-free",
   "agent": {
     "build": {
       "mode": "primary",
@@ -72,16 +72,34 @@
     },
     "plan": {
       "mode": "primary",
-      "description": "Planning agent: GPT-5.4 high reasoning, read-only.",
-      "model": "openai/gpt-5.4",
+      "description": "Scientific planning agent: DeepSeek R1 high reasoning.",
+      "model": "deepseek/deepseek-reasoner",
       "temperature": 0.1,
       "reasoningEffort": "high",
       "textVerbosity": "low",
-      "reasoningSummary": "auto",
-      "steps": 8,
+      "steps": 12,
       "permission": {
         "edit": "deny",
         "bash": "ask",
+        "webfetch": "ask"
+      }
+    },
+    "science-review": {
+      "mode": "primary",
+      "description": "Scientific review agent: GPT-5.4 for critical validation.",
+      "model": "openai/gpt-5.4",
+      "temperature": 0.05,
+      "reasoningEffort": "high",
+      "textVerbosity": "low",
+      "reasoningSummary": "auto",
+      "steps": 15,
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "python test_*.py": "allow",
+          "pytest --coverage": "allow"
+        },
         "webfetch": "ask"
       }
     }

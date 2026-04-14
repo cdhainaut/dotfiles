@@ -20,6 +20,12 @@
 - Yazi a des bugs d'affichage dans Zellij (limitation Sixel)
 - Shell : zsh avec oh-my-zsh
 
+## Environnement Python
+
+- **Conda env** : `latest` — à ACTIVER systématiquement avant de tester du code Python
+  - Contient : NomAD, pandas, numpy, matplotlib, xarray, seaborn, etc.
+  - Commande : `conda activate latest`
+
 ## Règles critiques
 
 ### JAMAIS casser Helix (hx)

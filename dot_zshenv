@@ -1,1 +1,4 @@
 . "$HOME/.cargo/env"
+
+# Load core PATH/env exports for all zsh shells (incl. login/non-interactive)
+[ -f "$HOME/.shell/path.sh" ] && . "$HOME/.shell/path.sh"

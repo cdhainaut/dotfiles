@@ -81,3 +81,31 @@ hx est l'IDE principal — le perdre bloque tout le travail. Après TOUT changem
 - Script `~/bin/backup-s3.sh` — timer systemd hebdomadaire
 - Stockage GLACIER sauf personal-ip-backup (STANDARD_IA)
 - Exclusions : .venv, node_modules, target, build, dist, .git, __pycache__, *.nc, *.grb, *.dll, *.exe
+
+## Workflow scientifique OpenCode
+
+### Gestion des plans et todos
+- **Agent `plan` (DeepSeek R1)** : Planification scientifique avec todo intégrée
+  - Permission `todowrite: allow` pour générer des listes de tâches structurées
+  - Plans sauvegardés dans `~/.local/share/opencode/plans/`
+  - Template standard : `~/PLANS/template-plan-scientific.md`
+- **Agent `build` (DeepSeek V3)** : Exécution des tâches
+  - Lire le plan avec référence explicite au fichier
+  - Suivre la todo list intégrée (cases Markdown ou todowrite)
+- **Agent `science-review` (GPT-5.4)** : Validation critique
+
+### Workflow étape par étape
+1. **Création du plan** : `@plan "Élabore un plan détaillé avec todo intégrée pour [problème]"`
+2. **Sauvegarde** : L'agent demande `bash` pour écrire le fichier dans `~/.local/share/opencode/plans/`
+3. **Exécution** : Basculer en mode `build` (Tab) et donner instruction :
+   ```
+   Suis le plan dans ~/.local/share/opencode/plans/[fichier].md
+   Commence par les tâches prioritaires (P1) de la section "Todo list intégrée".
+   ```
+4. **Suivi** : L'agent `build` utilise `todowrite` pour tracker la progression
+5. **Validation** : `@science-review` pour vérification finale
+
+### Outils pratiques
+- `new-plan.sh <projet> <titre>` : Crée un nouveau plan à partir du template
+- Référence absolue aux fichiers pour éviter la perte de contexte
+- Une seule tâche `in_progress` à la fois dans `todowrite`

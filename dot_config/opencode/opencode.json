@@ -81,7 +81,8 @@
       "permission": {
         "edit": "deny",
         "bash": "ask",
-        "webfetch": "ask"
+        "webfetch": "ask",
+        "todowrite": "allow"
       }
     },
     "science-review": {

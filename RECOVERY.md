@@ -148,14 +148,14 @@ echo '{"notification_type":"idle_prompt","message":"test"}' | ~/.claude/hooks/no
 
 ```bash
 # Thunderbird (mails, contacts, calendriers)
-cp -r "$BACKUP/apps/thunderbird" ~/.thunderbird
+cp -r "$BACKUP/.thunderbird" ~/.thunderbird
 
 # Firefox (profil, bookmarks, extensions)
-cp -r "$BACKUP/apps/mozilla" ~/.mozilla
+cp -r "$BACKUP/.mozilla" ~/.mozilla
 
 # Signal
 mkdir -p ~/.config/Signal
-cp -r "$BACKUP/apps/Signal/"* ~/.config/Signal/
+cp -r "$BACKUP/.config/Signal/"* ~/.config/Signal/
 ```
 
 ## Étape 7 — Post-install
@@ -283,7 +283,8 @@ Note : Glacier nécessite une restauration préalable (quelques heures). Utilise
 /media/<user>/<backup-disk>/
 ├── RECOVERY.md              ← Ce fichier
 ├── backup/
-│   ├── backup.sh            ← Script de backup rsync
+│   ├── scripts/backup-unified.sh ← Script de secours (synchronise S3 + disque externe)
+│   ├── backup.sh            ← Ancien script rsync (déprécié)
 │   ├── exclude-list.txt     ← Exclusions rsync
 │   ├── Administrative/      ← Backup /mnt/data/Administrative
 │   ├── Media/               ← Backup /mnt/data/Media
@@ -291,21 +292,29 @@ Note : Glacier nécessite une restauration préalable (quelques heures). Utilise
 │   ├── Software/            ← Backup /mnt/data/Software
 │   ├── Work/                ← Backup /mnt/data/Work
 │   ├── conda-envs/          ← Export YAML des envs conda
-│   └── home-YYYY-MM-DD/     ← Backup du home
+│   ├── system-health/       ← Rapports de santé système
+│   └── home-YYYY-MM-DD/     ← Backup du home (emails, clés, configs)
 │       ├── .ssh/
 │       ├── .gnupg/
 │       ├── .claude/
 │       ├── .config/gh/
+│       ├── .config/chezmoi/
+│       ├── .local/share/chezmoi/
 │       ├── .docker/
+│       ├── .cdsapirc
+│       ├── .private_keys
+│       ├── .gitlab_wds_token
+│       ├── .aws/
+│       ├── .zsh_history
+│       ├── .bash_history
+│       ├── .thunderbird/
+│       ├── .mozilla/
+│       ├── .config/Signal/
+│       ├── .local/share/evolution/
+│       ├── .config/evolution/
 │       ├── Documents/
-│       ├── Téléchargements/
-│       ├── Images/
-│       ├── Zotero/
-│       ├── chezmoi-repo/
 │       ├── loose-files/      ← PDFs, scripts en vrac de ~/
-│       ├── system-health/
-│       └── apps/
-│           ├── thunderbird/
-│           ├── mozilla/
-│           └── Signal/
+│       └── system-health/    ← Copie locale (optionnel)
 ```
+
+**Note** : Les scripts de backup principaux (`backup‑external.sh` et `backup‑s3.sh`) sont installés dans `~/bin/` après application de chezmoi. Les scripts présents sur le disque externe (`backup‑unified.sh`, `backup.sh`) sont conservés à titre d’archive ou de secours.

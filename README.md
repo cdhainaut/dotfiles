@@ -224,23 +224,25 @@ Setup script (`run_once_setup-system-monitor.sh`) installs smartmontools, enable
 
 Three layers of redundancy, each independent:
 
-### 1. External disk (`~/bin/emergency-backup.sh`)
+### 1. External disk (`~/bin/backup-external.sh`)
 
-Full backup to USB external drive (Toshiba 2 To, NTFS). NTFS-safe rsync (no permissions, `--modify-window=1`).
+Full backup to USB external drive (Toshiba 2 To, NTFS). NTFS‑safe rsync (`-rltD --modify-window=1`, no permissions). The script verifies the disk is mounted, then synchronises:
 
 ```bash
-~/bin/emergency-backup.sh
+~/bin/backup-external.sh
 ```
 
 Backs up:
 
 | Phase | Content | Destination |
 |-------|---------|-------------|
-| 1 | SSH/GPG keys, credentials, Claude Code, documents, downloads, conda envs | `backup/home-YYYY-MM-DD/` |
-| 2 | Chezmoi repo verification + copy | `backup/home-YYYY-MM-DD/chezmoi-repo/` |
-| 3 | Git dirty repos scan (warnings only) | stdout |
-| 4 | /mnt/data (Work, Personnal, Admin, Software, Media) | `backup/{dir}/` |
-| 5 | Thunderbird, Firefox, Signal | `backup/home-YYYY-MM-DD/apps/` |
+| 1 | Work (CDxxx projects) | `backup/Work/` |
+| 2 | Personnal, Administrative, Software, Media | `backup/{dir}/` |
+| 3 | Home critical (emails, SSH/GPG keys, credentials, Claude Code, configs, documents) | `backup/home-YYYY-MM-DD/` |
+| 4 | Conda environments (YAML exports) | `backup/conda-envs/` |
+| 5 | System health reports (optional) | `backup/system-health/` |
+
+All exclusions match those of the S3 backup script (`.cache`, `__pycache__`, `node_modules`, `.venv`, `target`, `build`, `dist`, `.nc`, `.grb`, `.dll`, `.exe`, large media files).
 
 Recovery guide on the external disk: `RECOVERY.md`.
 
@@ -256,9 +258,11 @@ Offsite backup, ~$1/mois for ~250 Go. Runs automatically every Sunday at 3:00 vi
 systemctl --user status backup-s3.timer
 systemctl --user list-timers
 
-# Logs
-journalctl --user -u backup-s3.service
+ # Logs
+ journalctl --user -u backup-s3.service
 ```
+
+*Note* : Si le disque externe est branché lors de l’exécution, le script met également à jour une copie locale (synchronisation optionnelle).
 
 | Bucket | Content |
 |--------|---------|
@@ -282,6 +286,7 @@ All dotfiles, scripts, and configs are versioned in `cdhainaut/dotfiles` and dep
 | /mnt/data/Media (259 Go) | No | Yes | No (trop gros) |
 | /mnt/data/.private | No | Yes | No |
 | Conda envs (YAML) | No | Yes | Yes |
+| Personal IP backup | No | No | Yes (STANDARD_IA) |
 | Thunderbird / Firefox / Signal | No | Yes | No |
 | Tool installation | run_once scripts | No | No |
 
@@ -308,7 +313,7 @@ User: Charles Dhainaut. Git LFS enabled. Global ignore: `.claude/settings.local.
 ├── bin/
 │   ├── executable_system-monitor.sh    # Weekly health monitoring
 │   ├── executable_backup-s3.sh         # S3 Glacier backup
-│   ├── executable_emergency-backup.sh  # External disk backup
+│   ├── executable_backup-external.sh   # External disk backup
 │   └── executable_verify-recovery.sh   # Post-recovery verification
 ├── dot_wezterm.lua                     # WezTerm
 ├── dot_zshrc                           # Zsh

@@ -54,15 +54,60 @@
           }
         }
       }
+    },
+    "qwen": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Qwen (DashScope)",
+      "options": {
+        "baseURL": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+        "apiKey": "{env:DASHSCOPE_API_KEY}"
+      },
+      "models": {
+        "qwen3.6-max-preview": {
+          "name": "Qwen3.6 Max Preview",
+          "reasoning": true,
+          "tool_call": true,
+          "limit": {
+            "context": 262144,
+            "output": 65536
+          }
+        },
+        "qwen3.6-plus": {
+          "name": "Qwen3.6 Plus",
+          "reasoning": true,
+          "tool_call": true,
+          "limit": {
+            "context": 1000000,
+            "output": 65536
+          }
+        },
+        "qwen3-coder-plus": {
+          "name": "Qwen3 Coder Plus",
+          "reasoning": true,
+          "tool_call": true,
+          "limit": {
+            "context": 1000000,
+            "output": 65536
+          }
+        },
+        "qwen3-coder-flash": {
+          "name": "Qwen3 Coder Flash",
+          "tool_call": true,
+          "limit": {
+            "context": 1000000,
+            "output": 65536
+          }
+        }
+      }
     }
   },
-  "model": "deepseek/deepseek-chat",
-  "small_model": "opencode/minimax-m2.5-free",
+  "model": "opencode-go/qwen3.6-plus",
+  "small_model": "opencode-go/qwen3.6-plus",
   "agent": {
     "build": {
       "mode": "primary",
-      "description": "Build agent: DeepSeek V3 for high-volume daily coding.",
-      "model": "deepseek/deepseek-chat",
+      "description": "Build agent: Qwen3.6 Plus via opencode-go for daily coding. DashScope models (qwen/qwen3-coder-plus, qwen/qwen3.6-max-preview) remain available on-demand for heavier tasks.",
+      "model": "opencode-go/qwen3.6-plus",
       "temperature": 0.1,
       "textVerbosity": "low",
       "steps": 20,
@@ -72,17 +117,44 @@
     },
     "plan": {
       "mode": "primary",
-      "description": "Scientific planning agent: DeepSeek R1 high reasoning.",
-      "model": "deepseek/deepseek-reasoner",
+      "description": "Scientific planning agent: Qwen3.6 Plus via opencode-go. Switch to qwen/qwen3.6-max-preview, opencode-go/kimi-k2.6 or opencode-go/glm-5.1 at runtime for heavier planning.",
+      "model": "opencode-go/qwen3.6-plus",
       "temperature": 0.1,
       "reasoningEffort": "high",
       "textVerbosity": "low",
-      "steps": 12,
+      "steps": 15,
       "permission": {
-        "edit": "deny",
+        "edit": "ask",
         "bash": "ask",
         "webfetch": "ask",
         "todowrite": "allow"
+      }
+    },
+    "generic": {
+      "mode": "primary",
+      "description": "General purpose agent: Qwen3.6 Plus via opencode-go for non-coding tasks — Markdown, presentations, commercial docs, emails, reports.",
+      "model": "opencode-go/qwen3.6-plus",
+      "temperature": 0.4,
+      "textVerbosity": "medium",
+      "steps": 20,
+      "permission": {
+        "edit": "ask",
+        "bash": "ask",
+        "webfetch": "ask"
+      }
+    },
+    "prototyper": {
+      "mode": "primary",
+      "description": "Rapid prototyping agent: Minimax M2.5 via opencode-go for fast iterations without reasoning overhead.",
+      "model": "opencode-go/minimax-m2.5",
+      "temperature": 0.7,
+      "textVerbosity": "low",
+      "reasoningEffort": "low",
+      "steps": 30,
+      "permission": {
+        "edit": "ask",
+        "bash": "ask",
+        "webfetch": "ask"
       }
     },
     "science-review": {

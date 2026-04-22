@@ -105,23 +105,17 @@ source $ZSH/oh-my-zsh.sh
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('{{ .chezmoi.homeDir }}/miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "{{ .chezmoi.homeDir }}/miniconda/etc/profile.d/conda.sh" ]; then
-#         . "{{ .chezmoi.homeDir }}/miniconda/etc/profile.d/conda.sh"
-#     else
-#         export PATH="{{ .chezmoi.homeDir }}/miniconda/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# 
-conda() {
-  unset -f conda
-  source "{{ .chezmoi.homeDir }}/miniconda/etc/profile.d/conda.sh"
-  conda "$@"
-}
+__conda_setup="$('/home/charles/miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/charles/miniconda/etc/profile.d/conda.sh" ]; then
+        . "/home/charles/miniconda/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/charles/miniconda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
 # <<< conda initialize <<<
 
 
@@ -134,7 +128,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # opencode
-export PATH={{ .chezmoi.homeDir }}/.opencode/bin:$PATH
+export PATH=/home/charles/.opencode/bin:$PATH
 
 # aliases
 alias ide="zellij -l ~/.config/zellij/layouts/helix-ide.kdl"

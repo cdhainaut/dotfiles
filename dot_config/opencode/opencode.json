@@ -5,8 +5,8 @@
       "name": "OpenCode Go",
       "options": {}
     },
-    "github-copilot": {
-      "name": "GitHub Copilot",
+    "openai": {
+      "name": "OpenAI",
       "options": {}
     }
   },
@@ -26,8 +26,26 @@
     },
     "review": {
       "mode": "primary",
-      "description": "Review critique: GPT-5.4 via Copilot. Rigueur inégalée, gratuit avec ton abonnement GitHub.",
-      "model": "github-copilot/gpt-5.4",
+      "description": "Review scientifique: Kimi K2.6. Tool calling validé opencode, bon rapport qualité/coût.",
+      "model": "opencode-go/kimi-k2.6",
+      "temperature": 0.05,
+      "reasoningEffort": "high",
+      "textVerbosity": "low",
+      "steps": 15,
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "python test_*.py": "allow",
+          "pytest --coverage": "allow"
+        },
+        "webfetch": "ask"
+      }
+    },
+    "gpt": {
+      "mode": "primary",
+      "description": "Review premium: GPT-5.4 via OpenAI (ChatGPT Plus). Rigueur maximale.",
+      "model": "openai/gpt-5.4",
       "temperature": 0.05,
       "reasoningEffort": "high",
       "textVerbosity": "low",

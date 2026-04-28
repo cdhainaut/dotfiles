@@ -92,7 +92,7 @@ hx est l'IDE principal — le perdre bloque tout le travail. Après TOUT changem
 - **Agent `deepseek` (DeepSeek V4 Pro, reasoning high)** : Exécution quotidienne du code
   - Lire le plan avec référence explicite au fichier
   - Suivre la todo list intégrée (cases Markdown ou todowrite)
-- **Agent `review` (Kimi K2.6)** : Validation critique du code
+- **Agent `review` (GPT-5.4 via Copilot)** : Validation critique
 
 ### Workflow étape par étape
 1. **Création du plan** : `@plan "Élabore un plan détaillé avec todo intégrée pour [problème]"`

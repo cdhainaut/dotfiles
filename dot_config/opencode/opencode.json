@@ -6,32 +6,17 @@
       "options": {}
     }
   },
-  "model": "opencode-go/deepseek-v4-pro",
-  "small_model": "opencode-go/deepseek-v4-pro",
+  "model": "opencode-go/deepseek-v4-flash",
+  "small_model": "opencode-go/deepseek-v4-flash",
   "agent": {
     "deepseek": {
       "mode": "primary",
-      "description": "Coding quotidien: DeepSeek V4 Pro. Contexte 1M, LiveCodeBench #1 (93.5), Codeforces 3206, Apex Shortlist #1 (90.2).",
-      "model": "opencode-go/deepseek-v4-pro",
+      "description": "Agent unique: DeepSeek V4 Flash par défaut (31K req/5h, pas de reasoning, 1M ctx). F2 pour cycler vers DeepSeek V4 Pro si besoin de reasoning.",
+      "model": "opencode-go/deepseek-v4-flash",
       "temperature": 0.1,
-      "reasoningEffort": "high",
       "textVerbosity": "low",
       "steps": 20,
       "permission": {
-        "webfetch": "ask"
-      }
-    },
-    "plan": {
-      "mode": "primary",
-      "description": "Planification: DeepSeek V4 Pro reasoning max. Papiers + codebase en 1M contexte.",
-      "model": "opencode-go/deepseek-v4-pro",
-      "temperature": 0.1,
-      "reasoningEffort": "max",
-      "textVerbosity": "low",
-      "steps": 15,
-      "permission": {
-        "edit": "ask",
-        "bash": "ask",
         "webfetch": "ask",
         "todowrite": "allow"
       }

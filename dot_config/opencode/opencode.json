@@ -4,30 +4,34 @@
     "opencode-go": {
       "name": "OpenCode Go",
       "options": {}
+    },
+    "github-copilot": {
+      "name": "GitHub Copilot",
+      "options": {}
     }
   },
-  "model": "opencode-go/deepseek-v4-flash",
-  "small_model": "opencode-go/deepseek-v4-flash",
+  "model": "opencode-go/deepseek-v4-pro",
+  "small_model": "opencode-go/deepseek-v4-pro",
   "agent": {
     "deepseek": {
       "mode": "primary",
-      "description": "Agent unique: DeepSeek V4 Flash par défaut (31K req/5h, pas de reasoning, 1M ctx). F2 pour cycler vers DeepSeek V4 Pro si besoin de reasoning.",
-      "model": "opencode-go/deepseek-v4-flash",
-      "temperature": 0.1,
+      "description": "Coding scientifique: DeepSeek V4 Pro (3.4K req/5h, reasoning high, contexte 1M). Compacter Ctrl+X C pour réduire le cache. F2 pour Flash sur tâches simples.",
+      "model": "opencode-go/deepseek-v4-pro",
+      "reasoningEffort": "high",
       "textVerbosity": "low",
       "steps": 20,
       "permission": {
-        "webfetch": "ask",
-        "todowrite": "allow"
+        "webfetch": "ask"
       }
     },
     "review": {
       "mode": "primary",
-      "description": "Review critique: Kimi K2.6. Tool calling validé opencode, rigueur scientifique.",
-      "model": "opencode-go/kimi-k2.6",
+      "description": "Review critique: GPT-5.4 via Copilot. Rigueur inégalée, gratuit avec ton abonnement GitHub.",
+      "model": "github-copilot/gpt-5.4",
       "temperature": 0.05,
       "reasoningEffort": "high",
       "textVerbosity": "low",
+      "reasoningSummary": "auto",
       "steps": 15,
       "permission": {
         "edit": "deny",

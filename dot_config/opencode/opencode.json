@@ -13,17 +13,6 @@
   "model": "opencode-go/deepseek-v4-pro",
   "small_model": "opencode-go/deepseek-v4-pro",
   "agent": {
-    "deepseek": {
-      "mode": "primary",
-      "description": "Coding scientifique: DeepSeek V4 Pro (3.4K req/5h, reasoning high, contexte 1M). Compacter Ctrl+X C pour réduire le cache. F2 pour Flash sur tâches simples.",
-      "model": "opencode-go/deepseek-v4-pro",
-      "reasoningEffort": "high",
-      "textVerbosity": "low",
-      "steps": 20,
-      "permission": {
-        "webfetch": "ask"
-      }
-    },
     "review": {
       "mode": "primary",
       "description": "Review scientifique: Kimi K2.6. Tool calling validé opencode, bon rapport qualité/coût.",
